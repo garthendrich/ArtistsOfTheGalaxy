@@ -7,7 +7,6 @@ export default class Renderer {
     this._setupProgram();
     this._initializePointers();
     this._initializeBuffers();
-    this._initializeMatrices();
 
     this.gl.enable(this.gl.DEPTH_TEST);
     this._setupProjection();
@@ -83,17 +82,11 @@ export default class Renderer {
     };
   }
 
-  _initializeMatrices() {
-    this.matrices = {
-      model: glMatrix.mat4.create(),
-      view: glMatrix.mat4.create(),
-      projection: glMatrix.mat4.create(),
-    };
-  }
-
   _setupProjection() {
+    const projectionMatrix = glMatrix.mat4.create();
+
     glMatrix.mat4.perspective(
-      this.matrices.projection,
+      projectionMatrix,
       (45 * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
@@ -103,18 +96,33 @@ export default class Renderer {
     this.gl.uniformMatrix4fv(
       this.pointers.uniforms.projection,
       false,
-      this.matrices.projection
+      projectionMatrix
     );
   }
 
   _setupStaticCamera() {
-    glMatrix.mat4.lookAt(this.matrices.view, [0, 0, 10], [0, 0, 0], [0, 1, 0]);
+    const cameraMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.lookAt(cameraMatrix, [0, 0, 10], [0, 0, 0], [0, 1, 0]);
+    this.gl.uniformMatrix4fv(this.pointers.uniforms.view, false, cameraMatrix);
+  }
 
-    this.gl.uniformMatrix4fv(
-      this.pointers.uniforms.view,
-      false,
-      this.matrices.view
+  _renderObject(object) {
+    this._setOrigin(object.origin);
+    this._setVertices(object.vertices);
+    this._setIndices(object.indices);
+
+    this.gl.drawElements(
+      this.gl.TRIANGLES,
+      object.indices.length,
+      this.gl.UNSIGNED_SHORT,
+      0
     );
+  }
+
+  _setOrigin(origin) {
+    const modelMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.translate(modelMatrix, modelMatrix, origin);
+    this.gl.uniformMatrix4fv(this.pointers.uniforms.model, false, modelMatrix);
   }
 
   _setVertices(vertices) {
@@ -144,31 +152,12 @@ export default class Renderer {
     );
   }
 
-  _setOrigin(origin) {
-    glMatrix.mat4.translate(this.matrices.model, this.matrices.model, origin);
-
-    this.gl.uniformMatrix4fv(
-      this.pointers.uniforms.model,
-      false,
-      this.matrices.model
-    );
-  }
-
   // public methods
 
-  render(object) {
+  renderObjects(objects) {
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-    this._setVertices(object.vertices);
-    this._setIndices(object.indices);
-    this._setOrigin(object.origin);
-
-    this.gl.drawElements(
-      this.gl.TRIANGLES,
-      object.indices.length,
-      this.gl.UNSIGNED_SHORT,
-      0
-    );
+    for (const object of objects) this._renderObject(object);
   }
 }
