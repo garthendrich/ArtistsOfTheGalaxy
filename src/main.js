@@ -6,6 +6,6 @@ main();
 function main() {
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
-  const planet = new Planet();
+  const planet = new Planet(1, [2, 3, -5]);
   renderer.render(planet);
 }

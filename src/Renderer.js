@@ -117,7 +117,7 @@ export default class Renderer {
     );
   }
 
-  _setPosition(vertices) {
+  _setVertices(vertices) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
@@ -144,20 +144,25 @@ export default class Renderer {
     );
   }
 
-  // public methods
-
-  render(object) {
-    this.gl.clearColor(0, 0, 0, 1);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-    this._setPosition(object.vertices);
-    this._setIndices(object.indices);
+  _setOrigin(origin) {
+    glMatrix.mat4.translate(this.matrices.model, this.matrices.model, origin);
 
     this.gl.uniformMatrix4fv(
       this.pointers.uniforms.model,
       false,
       this.matrices.model
     );
+  }
+
+  // public methods
+
+  render(object) {
+    this.gl.clearColor(0, 0, 0, 1);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+    this._setVertices(object.vertices);
+    this._setIndices(object.indices);
+    this._setOrigin(object.origin);
 
     this.gl.drawElements(
       this.gl.TRIANGLES,

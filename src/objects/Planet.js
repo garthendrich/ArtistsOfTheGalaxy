@@ -1,5 +1,11 @@
 export default class Planet {
-  constructor(radius = 1) {
+  constructor(radius = 1, origin = [0, 0, 0]) {
+    this.origin = origin;
+
+    this._generateVertices(radius);
+  }
+
+  _generateVertices(radius) {
     /**
      * buffer data generator derived from three.js SphereGeometry
      * https://github.com/mrdoob/three.js/blob/dev/src/geometries/SphereGeometry.js
