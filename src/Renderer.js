@@ -5,10 +5,13 @@ export default class Renderer {
   constructor(canvas) {
     this.gl = canvas.getContext("webgl2");
     this._setupProgram();
-    this._initPointers();
-    this._initBuffers();
-    this._initMatrices();
+    this._initializePointers();
+    this._initializeBuffers();
+    this._initializeMatrices();
+
     this.gl.enable(this.gl.DEPTH_TEST);
+    this._setupProjection();
+    this._setupStaticCamera();
   }
 
   _setupProgram() {
@@ -48,7 +51,7 @@ export default class Renderer {
     return shader;
   }
 
-  _initPointers() {
+  _initializePointers() {
     const gl = this.gl;
     const program = this.program;
 
@@ -73,19 +76,45 @@ export default class Renderer {
     };
   }
 
-  _initBuffers() {
+  _initializeBuffers() {
     this.buffers = {
       position: this.gl.createBuffer(),
       indices: this.gl.createBuffer(),
     };
   }
 
-  _initMatrices() {
+  _initializeMatrices() {
     this.matrices = {
       model: glMatrix.mat4.create(),
       view: glMatrix.mat4.create(),
       projection: glMatrix.mat4.create(),
     };
+  }
+
+  _setupProjection() {
+    glMatrix.mat4.perspective(
+      this.matrices.projection,
+      (45 * Math.PI) / 180,
+      this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
+      0.1,
+      100
+    );
+
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.projection,
+      false,
+      this.matrices.projection
+    );
+  }
+
+  _setupStaticCamera() {
+    glMatrix.mat4.lookAt(this.matrices.view, [0, 0, 10], [0, 0, 0], [0, 1, 0]);
+
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.view,
+      false,
+      this.matrices.view
+    );
   }
 
   _setPosition(vertices) {
@@ -124,29 +153,10 @@ export default class Renderer {
     this._setPosition(object.vertices);
     this._setIndices(object.indices);
 
-    glMatrix.mat4.lookAt(this.matrices.view, [0, 0, 5], [0, 0, 0], [0, 1, 0]);
-    glMatrix.mat4.perspective(
-      this.matrices.projection,
-      (45 * Math.PI) / 180,
-      this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
-      0.1,
-      100
-    );
-
     this.gl.uniformMatrix4fv(
       this.pointers.uniforms.model,
       false,
       this.matrices.model
-    );
-    this.gl.uniformMatrix4fv(
-      this.pointers.uniforms.view,
-      false,
-      this.matrices.view
-    );
-    this.gl.uniformMatrix4fv(
-      this.pointers.uniforms.projection,
-      false,
-      this.matrices.projection
     );
 
     this.gl.drawElements(
