@@ -1,3 +1,4 @@
+import subtractArrays from "./helpers/subtractArrays.js";
 import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 
@@ -10,7 +11,7 @@ export default class Renderer {
 
     this.gl.enable(this.gl.DEPTH_TEST);
     this._setupProjection();
-    this._setupStaticCamera();
+    this._initializeCamera();
   }
 
   _setupProgram() {
@@ -100,14 +101,32 @@ export default class Renderer {
     );
   }
 
-  _setupStaticCamera() {
+  _initializeCamera() {
+    this.camera = {
+      position: [0, 0, 0],
+      viewDirection: [0, 0, -1],
+      upDirection: [0, 1, 0],
+    };
+  }
+
+  _updateCamera() {
+    const cameraCenter = subtractArrays(
+      this.camera.position,
+      this.camera.viewDirection
+    );
+
     const cameraMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.lookAt(cameraMatrix, [0, 0, 10], [0, 0, 0], [0, 1, 0]);
+    glMatrix.mat4.lookAt(
+      cameraMatrix,
+      this.camera.position,
+      cameraCenter,
+      this.camera.upDirection
+    );
     this.gl.uniformMatrix4fv(this.pointers.uniforms.view, false, cameraMatrix);
   }
 
   _renderObject(object) {
-    this._setOrigin(object.origin);
+    this._setPositionOrigin(object.origin);
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
 
@@ -119,7 +138,7 @@ export default class Renderer {
     );
   }
 
-  _setOrigin(origin) {
+  _setPositionOrigin(origin) {
     const modelMatrix = glMatrix.mat4.create();
     glMatrix.mat4.translate(modelMatrix, modelMatrix, origin);
     this.gl.uniformMatrix4fv(this.pointers.uniforms.model, false, modelMatrix);
@@ -127,11 +146,13 @@ export default class Renderer {
 
   _setVertices(vertices) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.position);
+
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
       new Float32Array(vertices),
       this.gl.STATIC_DRAW
     );
+
     this.gl.vertexAttribPointer(
       this.pointers.attributes.position,
       3,
@@ -140,6 +161,7 @@ export default class Renderer {
       0,
       0
     );
+
     this.gl.enableVertexAttribArray(this.pointers.attributes.position);
   }
 
@@ -159,5 +181,10 @@ export default class Renderer {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
     for (const object of objects) this._renderObject(object);
+  }
+
+  moveCamera(x, y, z) {
+    this.camera.position = subtractArrays(this.camera.position, [x, y, z]);
+    this._updateCamera();
   }
 }
