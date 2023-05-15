@@ -1,4 +1,4 @@
-import subtractArrays from "./helpers/subtractArrays.js";
+import addVertices from "./utils/addVertices.js";
 import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 
@@ -110,7 +110,7 @@ export default class Renderer {
   }
 
   _updateCamera() {
-    const cameraCenter = subtractArrays(
+    const cameraCenter = addVertices(
       this.camera.position,
       this.camera.viewDirection
     );
@@ -184,7 +184,7 @@ export default class Renderer {
   }
 
   moveCamera(x, y, z) {
-    this.camera.position = subtractArrays(this.camera.position, [x, y, z]);
+    this.camera.position = addVertices(this.camera.position, [x, y, z]);
     this._updateCamera();
   }
 }
