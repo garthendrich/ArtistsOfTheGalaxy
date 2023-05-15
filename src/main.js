@@ -1,17 +1,17 @@
 import Renderer from "./Renderer.js";
-import Planet from "./objects/Planet.js";
+import Sphere from "./entities/Sphere.js";
 
 main();
 
 function main() {
   const planets = [
-    new Planet(10, [20, 30, -350]),
-    new Planet(10, [0, 0, -300]),
-    new Planet(20, [-60, -20, -450]),
-    new Planet(20, [-60, 50, -360]),
-    new Planet(20, [40, 0, -300]),
-    new Planet(30, [110, -150, -600]),
-    new Planet(30, [-300, -220, -900]),
+    new Sphere(10, [20, 30, -350]),
+    new Sphere(10, [0, 0, -300]),
+    new Sphere(20, [-60, -20, -450]),
+    new Sphere(20, [-60, 50, -360]),
+    new Sphere(20, [40, 0, -300]),
+    new Sphere(30, [110, -150, -600]),
+    new Sphere(30, [-300, -220, -900]),
   ];
 
   const canvas = document.querySelector("#screen");
