@@ -91,7 +91,7 @@ export default class Renderer {
       (45 * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
-      100
+      1000
     );
 
     this.gl.uniformMatrix4fv(
