@@ -14,6 +14,9 @@ function main() {
     new Sphere(30, [-300, -220, -900]),
   ];
 
+  const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
+  movingSphere.moveRight(1); // ! test/demo code
+
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 
@@ -29,7 +32,10 @@ function main() {
     renderer.moveCamera(0, 0, incrementer); // ! test/demo code
     z += incrementer; // ! test/demo code
 
-    renderer.renderObjects(planets);
+    movingSphere.updatePosition();
+
+    const objects = [...planets, movingSphere];
+    renderer.renderObjects(objects);
 
     window.requestAnimationFrame(loop);
   }

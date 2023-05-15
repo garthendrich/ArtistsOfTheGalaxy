@@ -1,6 +1,6 @@
-import Entity from "./Entity.js";
+import MovableEntity from "./MovableEntity.js";
 
-export default class Sphere extends Entity {
+export default class Sphere extends MovableEntity {
   constructor(radius = 1, origin) {
     super(origin);
 
