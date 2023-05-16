@@ -177,8 +177,8 @@ export default class Renderer {
   // public methods
 
   renderObjects(objects) {
-    this.gl.clearColor(0, 0, 0, 1);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    // this.gl.clearColor(0, 0, 0, 1);
+    // this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
     for (const object of objects) this._renderObject(object);
   }
