@@ -80,6 +80,7 @@ export default class Renderer {
     this.buffers = {
       position: this.gl.createBuffer(),
       indices: this.gl.createBuffer(),
+      colors: this.gl.createBuffer(),
     };
   }
 
@@ -129,6 +130,7 @@ export default class Renderer {
     this._setPositionOrigin(object.origin);
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
+    this._setColor(object.color);
 
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -174,11 +176,31 @@ export default class Renderer {
     );
   }
 
+  _setColor(color = [0,1,0]){
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.colors);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER, 
+      new Float32Array(color), 
+      this.gl.STATIC_DRAW
+    );
+    // console.log(color);
+    this.gl.vertexAttribPointer(
+      this.pointers.attributes.color, 
+      3, 
+      this.gl.FLOAT, 
+      false, 
+      0, 
+      0
+    );
+
+    this.gl.enableVertexAttribArray(this.pointers.color);
+  }
+
   // public methods
 
   renderObjects(objects) {
-    // this.gl.clearColor(0, 0, 0, 1);
-    // this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    this.gl.clearColor(0, 0, 0, 1);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
     for (const object of objects) this._renderObject(object);
   }

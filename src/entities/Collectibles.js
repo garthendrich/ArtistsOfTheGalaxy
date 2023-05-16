@@ -9,6 +9,8 @@ export default class Collectibles extends Entity {
   constructor(length = 1, origin) {
     super(origin);
 
+    // Default black Color;
+    this.color = [0,0,0];
     const [indices, vertices] = this._generateVertices(length);
     
     this.selectedBehavior = this._generateBehavior();
@@ -71,25 +73,28 @@ export default class Collectibles extends Entity {
         "SPEED", "COLOR", "SIZE"
     ];
 
-    return _selectItemFromArray(behaviors, 0,3);
+    return this._selectItemFromArray(behaviors, 0,3);
   }
 
   _generateColor(){
     const colors = [
-        [0,0,1], // BLUE
-        [0,1,0], // GREEN
-        [1,0,0], // RED
+        [0.0,0.0,1.0], // BLUE
+        [0.0,1.0,0.0], // GREEN
+        [1.0,0.0,0.0], // RED
     ];
 
-    return _selectItemFromArray(colors, 0,3);
+    this.color = this._selectItemFromArray(colors, 0,colors.length);
+
+    return this.color;
   }
 
   _generateSpeed(){
     const speeds = [
 
     ];
+    this.color = [0,0,0];
 
-    return _selectItemFromArray(speeds, 0,3);
+    return this._selectItemFromArray(speeds, 0,3, speeds.length);
   }
 
   _generateSize(){
@@ -98,8 +103,8 @@ export default class Collectibles extends Entity {
     const sizes = [
 
     ];
-
-    return _selectItemFromArray(sizes, 0,3);
+    this.color = [0,0,0];
+    return this._selectItemFromArray(sizes, 0,sizes.length);
   }
 
   _generateAttribute(){
