@@ -1,8 +1,13 @@
-export default class Planet {
-  constructor(radius = 1, origin = [0, 0, 0]) {
-    this.origin = origin;
+import MovableEntity from "./MovableEntity.js";
 
-    this._generateVertices(radius);
+export default class Sphere extends MovableEntity {
+  constructor(radius = 1, origin) {
+    super(origin);
+
+    const [indices, vertices] = this._generateVertices(radius);
+
+    this.setIndices(indices);
+    this.setVertices(vertices);
   }
 
   _generateVertices(radius) {
@@ -23,8 +28,8 @@ export default class Planet {
 
     // buffers
 
-    this.indices = [];
-    this.vertices = [];
+    const indices = [];
+    const vertices = [];
 
     // generate vertices
 
@@ -48,7 +53,7 @@ export default class Planet {
           Math.sin(phiStart + u * phiLength) *
           Math.sin(thetaStart + v * thetaLength);
 
-        this.vertices.push(x, y, z);
+        vertices.push(x, y, z);
 
         verticesRow.push(index);
         index++;
@@ -66,9 +71,11 @@ export default class Planet {
         const c = grid[iy + 1][ix];
         const d = grid[iy + 1][ix + 1];
 
-        if (iy !== 0) this.indices.push(a, b, d);
-        if (iy !== heightSegments - 1) this.indices.push(b, c, d);
+        if (iy !== 0) indices.push(a, b, d);
+        if (iy !== heightSegments - 1) indices.push(b, c, d);
       }
     }
+
+    return [indices, vertices];
   }
 }

@@ -1,23 +1,27 @@
 import Renderer from "./Renderer.js";
-import Planet from "./objects/Planet.js";
+import Sphere from "./entities/Sphere.js";
 
 main();
 
 function main() {
-  const canvas = document.querySelector("#screen");
-  const renderer = new Renderer(canvas);
   const planets = [
-    new Planet(1, [2, 3, -5]),
-    new Planet(1, [0, 0, 0]),
-    new Planet(2, [-6, -2, -15]),
-    new Planet(2, [-6, 5, -6]),
-    new Planet(2, [4, 0, 0]),
-    new Planet(3, [11, -15, -30]),
-    new Planet(3, [-30, -22, -60]),
+    new Sphere(10, [20, 30, -350]),
+    new Sphere(10, [0, 0, -300]),
+    new Sphere(20, [-60, -20, -450]),
+    new Sphere(20, [-60, 50, -360]),
+    new Sphere(20, [40, 0, -300]),
+    new Sphere(30, [110, -150, -600]),
+    new Sphere(30, [-300, -220, -900]),
   ];
 
-  const SPEED = 0.8; // ! test/demo code
-  const FARTHEST_Z = 100; // ! test/demo code
+  const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
+  movingSphere.moveRight(1); // ! test/demo code
+
+  const canvas = document.querySelector("#screen");
+  const renderer = new Renderer(canvas);
+
+  const SPEED = 8; // ! test/demo code
+  const FARTHEST_Z = 500; // ! test/demo code
   let z = 0; // ! test/demo code
   let incrementer = -SPEED; // ! test/demo code
 
@@ -28,7 +32,10 @@ function main() {
     renderer.moveCamera(0, 0, incrementer); // ! test/demo code
     z += incrementer; // ! test/demo code
 
-    renderer.renderObjects(planets);
+    movingSphere.updatePosition();
+
+    const objects = [...planets, movingSphere];
+    renderer.renderObjects(objects);
 
     window.requestAnimationFrame(loop);
   }
