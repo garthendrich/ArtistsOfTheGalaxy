@@ -1,4 +1,5 @@
 import Renderer from "./Renderer.js";
+import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
 
 main();
@@ -17,6 +18,9 @@ function main() {
   const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
   movingSphere.moveRight(1); // ! test/demo code
 
+  const collectibles = [
+    new Collectibles(30, [20,30,10]),
+  ];
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 
@@ -34,7 +38,7 @@ function main() {
 
     movingSphere.updatePosition();
 
-    const objects = [...planets, movingSphere];
+    const objects = [...planets,...collectibles, movingSphere];
     renderer.renderObjects(objects);
 
     window.requestAnimationFrame(loop);
