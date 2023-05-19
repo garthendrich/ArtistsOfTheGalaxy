@@ -107,6 +107,8 @@ export default class Renderer {
       viewDirection: [0, 0, -1],
       upDirection: [0, 1, 0],
     };
+
+    this._updateCamera();
   }
 
   _updateCamera() {
