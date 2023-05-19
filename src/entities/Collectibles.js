@@ -6,13 +6,18 @@ export default class Collectibles extends Entity {
     super(origin);
 
     // Default black Color;
-    this.color = [0, 0, 0, 1];
-    const [indices, vertices] = this._generateVertices(length);
-
+    this.color = [1, 0, 0, 1];
+    // behaviors
     this.selectedBehavior = this._generateBehavior();
     this.attribute = this._generateAttribute();
+    console.log(this.selectedBehavior, this.attribute);
+    const [indices, vertices] = this._generateVertices(length);
+    // will contain repeated copies of the default color
+    let colors = this._generateColors(indices);
+
     this.setIndices(indices);
     this.setVertices(vertices);
+    this.setColors(colors);
   }
 
   _generateVertices(length) {
@@ -21,14 +26,17 @@ export default class Collectibles extends Entity {
       0,
       0,
       1,
+
       length,
       0,
       0,
       1,
+
       0,
       0,
       length,
       1,
+
       length,
       0,
       length,
@@ -38,14 +46,17 @@ export default class Collectibles extends Entity {
       -length,
       0,
       1,
+
       length,
       -length,
       0,
       1,
+
       0,
       -length,
       length,
       1,
+
       length,
       -length,
       length,
@@ -75,8 +86,7 @@ export default class Collectibles extends Entity {
   }
 
   _selectItemFromArray(array, min, max) {
-    let index = getRandomNumber(min, max);
-
+    let index = Math.floor(getRandomNumber(min, max));
     return array[index];
   }
 
@@ -91,6 +101,9 @@ export default class Collectibles extends Entity {
       [0.0, 0.0, 1.0, 1], // BLUE
       [0.0, 1.0, 0.0, 1], // GREEN
       [1.0, 0.0, 0.0, 1], // RED
+      [0.0, 1.0, 1.0, 1],
+      [1.0, 1.0, 0.0, 1],
+      [1.0, 0.0, 1.0, 1],
     ];
 
     this.color = this._selectItemFromArray(colors, 0, colors.length);
@@ -99,27 +112,27 @@ export default class Collectibles extends Entity {
   }
 
   _generateSpeed() {
-    const speeds = [];
-    this.color = [0, 0, 0, 1];
+    const speeds = [1, 2, 3, 4, 5];
+    this.color = [1, 1, 1, 1];
 
     return this._selectItemFromArray(speeds, 0, 3, speeds.length);
   }
 
   _generateSize() {
     // bullet sizes
-    const sizes = [];
-    this.color = [0, 0, 0, 1];
+    const sizes = [1, 2, 3, 4, 5];
+    this.color = [1, 1, 1, 1];
     return this._selectItemFromArray(sizes, 0, sizes.length);
   }
 
   _generateAttribute() {
     switch (this.selectedBehavior) {
       case "SPEED":
-        return this._generateSpeed;
+        return this._generateSpeed();
       case "COLOR":
-        return this._generateColor;
+        return this._generateColor();
       case "SIZE":
-        return this._generateSize;
+        return this._generateSize();
     }
   }
 
@@ -127,4 +140,16 @@ export default class Collectibles extends Entity {
   //   _loadTexture(){}
 
   // _generateTextureVertices(){}
+
+  _generateColors(indices) {
+    let indicesCount = indices.length;
+    let colors = [];
+    for (let i = 0; i < indicesCount; i++) {
+      colors.push(this.color[0]);
+      colors.push(this.color[1]);
+      colors.push(this.color[2]);
+      colors.push(this.color[3]);
+    }
+    return colors;
+  }
 }

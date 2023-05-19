@@ -10,4 +10,8 @@ export default class Entity {
   setVertices(vertices) {
     this.vertices = vertices;
   }
+
+  setColors(colors) {
+    this.colors = colors;
+  }
 }

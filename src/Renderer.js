@@ -130,7 +130,7 @@ export default class Renderer {
     this._setPositionOrigin(object.origin);
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
-    this._setColor(object.color);
+    this._setColor(object.colors);
 
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -176,7 +176,7 @@ export default class Renderer {
     );
   }
 
-  _setColor(color = [0, 0, 0, 1]) {
+  _setColor(color) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.colors);
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
