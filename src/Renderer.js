@@ -176,24 +176,22 @@ export default class Renderer {
     );
   }
 
-  _setColor(color = [0,1,0]){
+  _setColor(color = [0, 0, 0, 1]) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.colors);
     this.gl.bufferData(
-      this.gl.ARRAY_BUFFER, 
-      new Float32Array(color), 
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(color),
       this.gl.STATIC_DRAW
     );
-    // console.log(color);
     this.gl.vertexAttribPointer(
-      this.pointers.attributes.color, 
-      3, 
-      this.gl.FLOAT, 
-      false, 
-      0, 
+      this.pointers.attributes.color,
+      4,
+      this.gl.FLOAT,
+      false,
+      0,
       0
     );
-
-    this.gl.enableVertexAttribArray(this.pointers.color);
+    this.gl.enableVertexAttribArray(this.pointers.attributes.color);
   }
 
   // public methods
