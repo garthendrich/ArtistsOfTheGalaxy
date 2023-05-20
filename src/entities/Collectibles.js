@@ -25,7 +25,7 @@ export default class Collectibles extends Entity {
   }
 
   _generateVertices(length) {
-    // Cube vertices obtained from: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
+    // Cube vertices and indices obtained from: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
     const vertices = [
       -length,
       -length,
@@ -140,6 +140,7 @@ export default class Collectibles extends Entity {
   }
 
   _generateSpeed() {
+    // bullet speed
     const speeds = [1, 2, 3, 4, 5];
     this.color = [1, 1, 1, 1];
 
@@ -163,9 +164,6 @@ export default class Collectibles extends Entity {
         return this._generateSize();
     }
   }
-
-  //   Will load texture depending on the type of the collectible (SPEED, COLOR, SIZE);
-  //   _loadTexture(){}
 
   _generateTextureVertices() {
     let vertices = [

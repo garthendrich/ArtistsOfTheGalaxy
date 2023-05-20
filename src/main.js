@@ -5,6 +5,10 @@ import Sphere from "./entities/Sphere.js";
 main();
 
 function main() {
+  /** ---------------------------------
+   * OBJECTS starts here
+   * ----------------------------------
+   */
   const planets = [
     new Sphere(10, [20, 30, -350]),
     new Sphere(10, [0, 0, -300]),
@@ -19,6 +23,12 @@ function main() {
   movingSphere.moveRight(1); // ! test/demo code
 
   const collectibles = [new Collectibles(20, [20, 30, 10])];
+
+  /** ---------------------------------
+   * OBJECTS ends here
+   * ----------------------------------
+   */
+
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 

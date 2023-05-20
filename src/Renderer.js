@@ -201,7 +201,8 @@ export default class Renderer {
   _setTexture(texturePath) {
     var texture = this.gl.createTexture();
     const path = "./src/assets/" + texturePath;
-    // Asynchronously load an image
+
+    // load an image
     const image = new Image();
     image.src = path;
 
@@ -215,16 +216,8 @@ export default class Renderer {
         this.gl.UNSIGNED_BYTE,
         image
       );
-      // if (((image.height & (image.height - 1)) === 0) && ((image.width & (image.width - 1)) === 0)) {
-      //   // Yes, it's a power of 2. Generate mips.
-      //   this.gl.generateMipmap(this.gl.TEXTURE_2D);
-      // } else {
-      //   // No, it's not a power of 2. Turn off mips and set
-      //   // wrapping to clamp to edge
-      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
-      // }
+      // clamp the texture to the surface
+      // note this supposedly won't work in circles
       this.gl.texParameteri(
         this.gl.TEXTURE_2D,
         this.gl.TEXTURE_WRAP_S,
@@ -242,12 +235,6 @@ export default class Renderer {
       );
     };
   }
-
-  // _updateTexture(texture, image){
-  //     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-  //     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA,this.gl.UNSIGNED_BYTE, image);
-  //     this.gl.generateMipmap(this.gl.TEXTURE_2D);
-  // }
 
   _setTextureCoords(textureCoords) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texture);
