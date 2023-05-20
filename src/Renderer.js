@@ -67,6 +67,7 @@ export default class Renderer {
       attributes: {
         position: getAttribLocation("a_position"),
         color: getAttribLocation("a_color"),
+        textureCoord: getAttribLocation("a_texcoord"),
       },
       uniforms: {
         model: getUniformLocation("u_model_matrix"),
@@ -81,6 +82,7 @@ export default class Renderer {
       position: this.gl.createBuffer(),
       indices: this.gl.createBuffer(),
       colors: this.gl.createBuffer(),
+      texture: this.gl.createBuffer(),
     };
   }
 
@@ -131,6 +133,8 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
+    this._setTexture(object.texturePath);
+    this._setTextureCoords(object.textureCoords);
 
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -192,6 +196,76 @@ export default class Renderer {
       0
     );
     this.gl.enableVertexAttribArray(this.pointers.attributes.color);
+  }
+
+  _setTexture(texturePath) {
+    var texture = this.gl.createTexture();
+    const path = "./src/assets/" + texturePath;
+    // Asynchronously load an image
+    const image = new Image();
+    image.src = path;
+
+    image.onload = () => {
+      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGBA,
+        this.gl.RGBA,
+        this.gl.UNSIGNED_BYTE,
+        image
+      );
+      // if (((image.height & (image.height - 1)) === 0) && ((image.width & (image.width - 1)) === 0)) {
+      //   // Yes, it's a power of 2. Generate mips.
+      //   this.gl.generateMipmap(this.gl.TEXTURE_2D);
+      // } else {
+      //   // No, it's not a power of 2. Turn off mips and set
+      //   // wrapping to clamp to edge
+      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+      //   this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+      // }
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_WRAP_S,
+        this.gl.CLAMP_TO_EDGE
+      );
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_WRAP_T,
+        this.gl.CLAMP_TO_EDGE
+      );
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_MIN_FILTER,
+        this.gl.LINEAR
+      );
+    };
+  }
+
+  // _updateTexture(texture, image){
+  //     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+  //     this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA,this.gl.UNSIGNED_BYTE, image);
+  //     this.gl.generateMipmap(this.gl.TEXTURE_2D);
+  // }
+
+  _setTextureCoords(textureCoords) {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texture);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(textureCoords),
+      this.gl.STATIC_DRAW
+    );
+    this.gl.vertexAttribPointer(
+      this.pointers.attributes.textureCoord,
+      2,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+
+    this.gl.enableVertexAttribArray(this.pointers.attributes.textureCoord);
   }
 
   // public methods

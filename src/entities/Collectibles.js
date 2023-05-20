@@ -10,17 +10,22 @@ export default class Collectibles extends Entity {
     // behaviors
     this.selectedBehavior = this._generateBehavior();
     this.attribute = this._generateAttribute();
-    console.log(this.selectedBehavior, this.attribute);
+
     const [indices, vertices] = this._generateVertices(length);
     // will contain repeated copies of the default color
-    let colors = this._generateColors(indices);
+    const colors = this._generateColors(indices);
+    const textureCoords = this._generateTextureVertices();
+    const texturePath = this._generateTexturePath();
 
     this.setIndices(indices);
     this.setVertices(vertices);
     this.setColors(colors);
+    this.setTextureCoords(textureCoords);
+    this.setTextureImage(texturePath);
   }
 
   _generateVertices(length) {
+    // Cube vertices obtained from: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
     const vertices = [
       -length,
       -length,
@@ -162,7 +167,40 @@ export default class Collectibles extends Entity {
   //   Will load texture depending on the type of the collectible (SPEED, COLOR, SIZE);
   //   _loadTexture(){}
 
-  // _generateTextureVertices(){}
+  _generateTextureVertices() {
+    let vertices = [
+      // top
+      0, 1, 1, 1, 1, 0, 0, 0,
+
+      // bottom
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // front
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // left
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // Right
+      1, 0, 0, 0, 0, 1, 1, 1,
+
+      // back
+      1, 1, 0, 1, 0, 0, 1, 0,
+    ];
+
+    return vertices;
+  }
+
+  _generateTexturePath() {
+    switch (this.selectedBehavior) {
+      case "SPEED":
+        return "speed-texture.png";
+      case "COLOR":
+        return "color-texture.png";
+      case "SIZE":
+        return "size-texture.png";
+    }
+  }
 
   _generateColors(indices) {
     let indicesCount = indices.length;

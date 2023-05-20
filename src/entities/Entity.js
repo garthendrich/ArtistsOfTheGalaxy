@@ -14,4 +14,12 @@ export default class Entity {
   setColors(colors) {
     this.colors = colors;
   }
+
+  setTextureCoords(textureCoords) {
+    this.textureCoords = textureCoords;
+  }
+
+  setTextureImage(texturePath) {
+    this.texturePath = texturePath;
+  }
 }
