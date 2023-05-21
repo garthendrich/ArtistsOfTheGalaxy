@@ -41,6 +41,7 @@ function main() {
   let fpsCounter = 0;
 
   let lastBulletFireTime = 0;
+  let willFireBullet = false;
 
   window.requestAnimationFrame(loop);
 
@@ -51,6 +52,8 @@ function main() {
       fpsCounter = 0;
       lastFrameTime = currentTime;
     }
+
+    if (willFireBullet) spawnBullet();
 
     for (const [bulletIndex, bullet] of bullets.entries()) {
       // ! change camera z to ship z position
@@ -74,7 +77,11 @@ function main() {
   }
 
   window.addEventListener("keydown", (event) => {
-    if (event.code === "Space") spawnBullet();
+    if (event.code === "Space") willFireBullet = true;
+  });
+
+  window.addEventListener("keyup", (event) => {
+    if (event.code === "Space") willFireBullet = false;
   });
 
   function spawnBullet() {
