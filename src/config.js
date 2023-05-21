@@ -1,1 +1,2 @@
+export const BULLET_INTERVAL_TIME = 200;
 export const BULLET_MAX_DISTANCE_FROM_SHIP = 2000;

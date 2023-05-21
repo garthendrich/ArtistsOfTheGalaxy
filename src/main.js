@@ -1,4 +1,7 @@
-import { BULLET_MAX_DISTANCE_FROM_SHIP } from "./config.js";
+import {
+  BULLET_INTERVAL_TIME,
+  BULLET_MAX_DISTANCE_FROM_SHIP,
+} from "./config.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
 import Renderer from "./Renderer.js";
@@ -34,8 +37,10 @@ function main() {
   const renderer = new Renderer(canvas);
 
   let currentTime = Date.now();
-  let lastFrameTime = currentTime;
+  let lastFrameTime = 0;
   let fpsCounter = 0;
+
+  let lastBulletFireTime = 0;
 
   window.requestAnimationFrame(loop);
 
@@ -73,9 +78,13 @@ function main() {
   });
 
   function spawnBullet() {
+    if (currentTime - lastBulletFireTime < BULLET_INTERVAL_TIME) return;
+
     const bulletSpawnPosition = addArrays(renderer.camera.position, [0, -4, 0]); // ! change based on ship
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
     bullet.moveBack(512);
     bullets.push(bullet);
+
+    lastBulletFireTime = currentTime;
   }
 }
