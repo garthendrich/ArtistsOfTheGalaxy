@@ -1,4 +1,4 @@
-import addVertices from "../utils/addVertices.js";
+import addArrays from "../utils/addArrays.js";
 import Entity from "./Entity.js";
 
 export default class MovableEntity extends Entity {
@@ -11,7 +11,7 @@ export default class MovableEntity extends Entity {
   }
 
   updatePosition() {
-    this.origin = addVertices(this.origin, [this.dx, this.dy, this.dz]);
+    this.origin = addArrays(this.origin, [this.dx, this.dy, this.dz]);
   }
 
   moveLeft(movementSpeed) {

@@ -1,4 +1,4 @@
-import addVertices from "./utils/addVertices.js";
+import addArrays from "./utils/addArrays.js";
 import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 
@@ -110,10 +110,12 @@ export default class Renderer {
       viewDirection: [0, 0, -1],
       upDirection: [0, 1, 0],
     };
+
+    this._updateCamera();
   }
 
   _updateCamera() {
-    const cameraCenter = addVertices(
+    const cameraCenter = addArrays(
       this.camera.position,
       this.camera.viewDirection
     );
@@ -265,7 +267,7 @@ export default class Renderer {
   }
 
   moveCamera(x, y, z) {
-    this.camera.position = addVertices(this.camera.position, [x, y, z]);
+    this.camera.position = addArrays(this.camera.position, [x, y, z]);
     this._updateCamera();
   }
 }

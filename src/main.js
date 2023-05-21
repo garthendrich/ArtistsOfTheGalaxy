@@ -1,6 +1,7 @@
-import Renderer from "./Renderer.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
+import Renderer from "./Renderer.js";
+import addArrays from "./utils/addArrays.js";
 
 main();
 
@@ -9,6 +10,7 @@ function main() {
    * OBJECTS starts here
    * ----------------------------------
    */
+
   const planets = [
     new Sphere(10, [20, 30, -350]),
     new Sphere(10, [0, 0, -300]),
@@ -19,10 +21,9 @@ function main() {
     new Sphere(30, [-300, -220, -900]),
   ];
 
-  const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
-  movingSphere.moveRight(1); // ! test/demo code
+  const bullets = [];
 
-  const collectibles = [new Collectibles(20, [20, 30, 10])];
+  const collectibles = [new Collectibles(20, [20, 30, -100])];
 
   /** ---------------------------------
    * OBJECTS ends here
@@ -32,23 +33,27 @@ function main() {
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 
-  const SPEED = 1; // ! test/demo code
-  const FARTHEST_Z = 500; // ! test/demo code
-  let z = 0; // ! test/demo code
-  let incrementer = -SPEED; // ! test/demo code
-
   window.requestAnimationFrame(loop);
 
   function loop() {
-    if (z < 0 || z > FARTHEST_Z) incrementer *= -1; // ! test/demo code
-    renderer.moveCamera(0, 0, incrementer); // ! test/demo code
-    z += incrementer; // ! test/demo code
+    for (const bullet of bullets) {
+      bullet.updatePosition();
+    }
 
-    movingSphere.updatePosition();
-
-    const objects = [...planets, ...collectibles];
+    const objects = [...planets, ...bullets, ...collectibles];
     renderer.renderObjects(objects);
 
     window.requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("keydown", (event) => {
+    if (event.code === "Space") spawnBullet();
+  });
+
+  function spawnBullet() {
+    const bulletSpawnPosition = addArrays(renderer.camera.position, [0, -4, 0]); // ! change based on ship
+    const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
+    bullet.moveBack(16);
+    bullets.push(bullet);
   }
 }
