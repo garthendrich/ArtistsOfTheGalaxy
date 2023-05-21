@@ -67,6 +67,7 @@ export default class Renderer {
       attributes: {
         position: getAttribLocation("a_position"),
         color: getAttribLocation("a_color"),
+        textureCoord: getAttribLocation("a_texcoord"),
       },
       uniforms: {
         model: getUniformLocation("u_model_matrix"),
@@ -80,6 +81,8 @@ export default class Renderer {
     this.buffers = {
       position: this.gl.createBuffer(),
       indices: this.gl.createBuffer(),
+      colors: this.gl.createBuffer(),
+      texture: this.gl.createBuffer(),
     };
   }
 
@@ -129,6 +132,9 @@ export default class Renderer {
     this._setPositionOrigin(object.origin);
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
+    this._setColor(object.colors);
+    this._setTexture(object.texturePath);
+    this._setTextureCoords(object.textureCoords);
 
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -172,6 +178,81 @@ export default class Renderer {
       new Uint16Array(indices),
       this.gl.STATIC_DRAW
     );
+  }
+
+  _setColor(color) {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.colors);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(color),
+      this.gl.STATIC_DRAW
+    );
+    this.gl.vertexAttribPointer(
+      this.pointers.attributes.color,
+      4,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+    this.gl.enableVertexAttribArray(this.pointers.attributes.color);
+  }
+
+  _setTexture(texturePath) {
+    var texture = this.gl.createTexture();
+    const path = "./src/assets/" + texturePath;
+
+    // load an image
+    const image = new Image();
+    image.src = path;
+
+    image.onload = () => {
+      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGBA,
+        this.gl.RGBA,
+        this.gl.UNSIGNED_BYTE,
+        image
+      );
+      // clamp the texture to the surface
+      // note this supposedly won't work in circles
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_WRAP_S,
+        this.gl.CLAMP_TO_EDGE
+      );
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_WRAP_T,
+        this.gl.CLAMP_TO_EDGE
+      );
+      this.gl.texParameteri(
+        this.gl.TEXTURE_2D,
+        this.gl.TEXTURE_MIN_FILTER,
+        this.gl.LINEAR
+      );
+    };
+  }
+
+  _setTextureCoords(textureCoords) {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texture);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(textureCoords),
+      this.gl.STATIC_DRAW
+    );
+    this.gl.vertexAttribPointer(
+      this.pointers.attributes.textureCoord,
+      2,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+
+    this.gl.enableVertexAttribArray(this.pointers.attributes.textureCoord);
   }
 
   // public methods

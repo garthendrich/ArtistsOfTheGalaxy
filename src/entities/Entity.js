@@ -10,4 +10,16 @@ export default class Entity {
   setVertices(vertices) {
     this.vertices = vertices;
   }
+
+  setColors(colors) {
+    this.colors = colors;
+  }
+
+  setTextureCoords(textureCoords) {
+    this.textureCoords = textureCoords;
+  }
+
+  setTextureImage(texturePath) {
+    this.texturePath = texturePath;
+  }
 }

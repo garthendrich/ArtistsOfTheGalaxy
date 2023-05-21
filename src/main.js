@@ -1,9 +1,14 @@
 import Renderer from "./Renderer.js";
+import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
 
 main();
 
 function main() {
+  /** ---------------------------------
+   * OBJECTS starts here
+   * ----------------------------------
+   */
   const planets = [
     new Sphere(10, [20, 30, -350]),
     new Sphere(10, [0, 0, -300]),
@@ -17,10 +22,17 @@ function main() {
   const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
   movingSphere.moveRight(1); // ! test/demo code
 
+  const collectibles = [new Collectibles(20, [20, 30, 10])];
+
+  /** ---------------------------------
+   * OBJECTS ends here
+   * ----------------------------------
+   */
+
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 
-  const SPEED = 8; // ! test/demo code
+  const SPEED = 1; // ! test/demo code
   const FARTHEST_Z = 500; // ! test/demo code
   let z = 0; // ! test/demo code
   let incrementer = -SPEED; // ! test/demo code
@@ -34,7 +46,7 @@ function main() {
 
     movingSphere.updatePosition();
 
-    const objects = [...planets, movingSphere];
+    const objects = [...planets, ...collectibles];
     renderer.renderObjects(objects);
 
     window.requestAnimationFrame(loop);
