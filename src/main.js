@@ -33,9 +33,20 @@ function main() {
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas);
 
+  let currentTime = Date.now();
+  let lastFrameTime = currentTime;
+  let fpsCounter = 0;
+
   window.requestAnimationFrame(loop);
 
   function loop() {
+    fpsCounter++;
+    if (currentTime - lastFrameTime > 1000) {
+      console.log("FPS: " + fpsCounter);
+      fpsCounter = 0;
+      lastFrameTime = currentTime;
+    }
+
     for (const [bulletIndex, bullet] of bullets.entries()) {
       // ! change camera z to ship z position
       // ship.getZ()
@@ -53,6 +64,7 @@ function main() {
     const objects = [...planets, ...bullets, ...collectibles];
     renderer.renderObjects(objects);
 
+    currentTime = Date.now();
     window.requestAnimationFrame(loop);
   }
 
