@@ -1,0 +1,1 @@
+export const BULLET_MAX_DISTANCE_FROM_SHIP = 2000;

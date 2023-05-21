@@ -135,8 +135,11 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-    this._setTexture(object.texturePath);
-    this._setTextureCoords(object.textureCoords);
+
+    if (object.texturePath) {
+      this._setTexture(object.texturePath);
+      this._setTextureCoords(object.textureCoords);
+    }
 
     this.gl.drawElements(
       this.gl.TRIANGLES,

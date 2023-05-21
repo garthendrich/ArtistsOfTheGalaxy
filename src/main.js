@@ -1,3 +1,4 @@
+import { BULLET_MAX_DISTANCE_FROM_SHIP } from "./config.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
 import Renderer from "./Renderer.js";
@@ -13,7 +14,6 @@ function main() {
 
   const planets = [
     new Sphere(10, [20, 30, -350]),
-    new Sphere(10, [0, 0, -300]),
     new Sphere(20, [-60, -20, -450]),
     new Sphere(20, [-60, 50, -360]),
     new Sphere(20, [40, 0, -300]),
@@ -36,7 +36,17 @@ function main() {
   window.requestAnimationFrame(loop);
 
   function loop() {
-    for (const bullet of bullets) {
+    for (const [bulletIndex, bullet] of bullets.entries()) {
+      // ! change camera z to ship z position
+      // ship.getZ()
+      if (
+        bullet.getZ() - renderer.camera.position[1] <
+        -BULLET_MAX_DISTANCE_FROM_SHIP
+      ) {
+        bullets.splice(bulletIndex, 1);
+        continue;
+      }
+
       bullet.updatePosition();
     }
 
@@ -53,7 +63,7 @@ function main() {
   function spawnBullet() {
     const bulletSpawnPosition = addArrays(renderer.camera.position, [0, -4, 0]); // ! change based on ship
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
-    bullet.moveBack(16);
+    bullet.moveBack(24);
     bullets.push(bullet);
   }
 }
