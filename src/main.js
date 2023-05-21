@@ -63,7 +63,7 @@ function main() {
   function spawnBullet() {
     const bulletSpawnPosition = addArrays(renderer.camera.position, [0, -4, 0]); // ! change based on ship
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
-    bullet.moveBack(24);
+    bullet.moveBack(512);
     bullets.push(bullet);
   }
 }

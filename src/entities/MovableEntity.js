@@ -11,7 +11,19 @@ export default class MovableEntity extends Entity {
   }
 
   updatePosition() {
-    this.origin = addArrays(this.origin, [this.dx, this.dy, this.dz]);
+    if (this.lastPositionUpdate === undefined) {
+      this.lastPositionUpdate = Date.now();
+    }
+
+    const deltaTime = (Date.now() - this.lastPositionUpdate) / 1000;
+
+    this.origin = addArrays(this.origin, [
+      this.dx * deltaTime,
+      this.dy * deltaTime,
+      this.dz * deltaTime,
+    ]);
+
+    this.lastPositionUpdate = Date.now();
   }
 
   moveLeft(movementSpeed) {
