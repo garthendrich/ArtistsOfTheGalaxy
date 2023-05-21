@@ -56,12 +56,9 @@ function main() {
     if (willFireBullet) spawnBullet();
 
     for (const [bulletIndex, bullet] of bullets.entries()) {
-      // ! change camera z to ship z position
-      // ship.getZ()
-      if (
-        bullet.getZ() - renderer.camera.position[1] <
-        -BULLET_MAX_DISTANCE_FROM_SHIP
-      ) {
+      const bulletDistanceFromShip =
+        renderer.camera.position[2] - bullet.getZ(); // ! change camera z position to ship z: ship.getZ()
+      if (bulletDistanceFromShip > BULLET_MAX_DISTANCE_FROM_SHIP) {
         bullets.splice(bulletIndex, 1);
         continue;
       }
