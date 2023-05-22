@@ -145,14 +145,18 @@ export default class Renderer {
     // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
     // console.log(maxTextureUnits);
 
+    // if the object has a texture
     if (object.textureName) {
+      // get the texture name (refer to Entity.js)
       const textureName = object.textureName;
+      // get the texture and texture unit
       const { texture, textureUnitIndex } = this.loadedTextures[textureName];
 
       // Activate the texture unit and bind the texture
       this.gl.activeTexture(this.gl.TEXTURE0 + textureUnitIndex);
       this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
+      // get the sample and set this texture unit to the sampler2d
       this.gl.uniform1i(this.pointers.uniforms.textureUnit, textureUnitIndex);
     }
 
@@ -224,8 +228,11 @@ export default class Renderer {
     let textureUnitIndex = 0;
 
     for (const textureName in textures) {
+      // create a texture in webgl for each texture
       const texturePath = textures[textureName];
       const texture = this._loadOneTexture(textureName, texturePath);
+
+      // set the texture and the texture unit of the texture name in the loaded textures
       loadedTextures[textureName] = {
         texture: texture,
         textureUnitIndex: textureUnitIndex,
@@ -245,8 +252,12 @@ export default class Renderer {
     const image = new Image();
     const path = "./src/assets/" + texturePath;
     image.src = path;
+
+    // Actually the onload is not necessary since local, haha :<
     image.onload = () => {
       this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+      // For wrapping mode, note that for power of 2 textures this wont work
       this.gl.texImage2D(
         this.gl.TEXTURE_2D,
         0,

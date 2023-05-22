@@ -27,6 +27,10 @@ function main() {
     new Collectibles(20, [20, 30, 10]),
     new Collectibles(20, [-40, 30, 10]),
     new Collectibles(20, [-100, 30, 10]),
+    new Collectibles(20, [80, -20, 10]),
+    new Collectibles(20, [20, -20, 10]),
+    new Collectibles(20, [-40, -20, 10]),
+    new Collectibles(20, [-100, -20, 10]),
   ];
 
   /** ---------------------------------
@@ -44,8 +48,15 @@ function main() {
     COLOR: "color-texture.png",
   };
 
+  /** ----------------------------------
+   *  Renderer proper
+   *  ----------------------------------
+   */
+
   const canvas = document.querySelector("#screen");
   const renderer = new Renderer(canvas, textures);
+
+  // Animation
 
   const SPEED = 1; // ! test/demo code
   const FARTHEST_Z = 500; // ! test/demo code
