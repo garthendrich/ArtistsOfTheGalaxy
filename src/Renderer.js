@@ -168,6 +168,11 @@ export default class Renderer {
     );
   }
 
+  /**-------------------------
+   *  POSITION FUNCTIONS
+   * -------------------------
+   */
+
   _setPositionOrigin(origin) {
     const modelMatrix = glMatrix.mat4.create();
     glMatrix.mat4.translate(modelMatrix, modelMatrix, origin);
@@ -203,7 +208,10 @@ export default class Renderer {
       this.gl.STATIC_DRAW
     );
   }
-
+  /**-------------------------
+   *  COLOR FUNCTIONS
+   * -------------------------
+   */
   _setColor(color) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.colors);
     this.gl.bufferData(
@@ -222,7 +230,10 @@ export default class Renderer {
     this.gl.enableVertexAttribArray(this.pointers.attributes.color);
   }
 
-  // Texture functions
+  /**--------------------------
+   * TEXTURE FUNCTIONS
+   * ------------------------
+   */
   _loadTextures(textures) {
     const loadedTextures = {};
     let textureUnitIndex = 0;
@@ -230,7 +241,7 @@ export default class Renderer {
     for (const textureName in textures) {
       // create a texture in webgl for each texture
       const texturePath = textures[textureName];
-      const texture = this._loadOneTexture(textureName, texturePath);
+      const texture = this._loadOneTexture(texturePath);
 
       // set the texture and the texture unit of the texture name in the loaded textures
       loadedTextures[textureName] = {
@@ -244,7 +255,7 @@ export default class Renderer {
     return loadedTextures;
   }
 
-  _loadOneTexture(textureName, texturePath) {
+  _loadOneTexture(texturePath) {
     const texture = this.gl.createTexture();
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
 
@@ -305,7 +316,10 @@ export default class Renderer {
     this.gl.enableVertexAttribArray(this.pointers.attributes.textureCoord);
   }
 
-  // public methods
+  /** ------------------------
+   *  PUBLIC METHODS
+   * -------------------------
+   */
   renderObjects(objects) {
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
