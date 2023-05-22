@@ -3,7 +3,7 @@ import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 
 export default class Renderer {
-  constructor(canvas) {
+  constructor(canvas, textures = null) {
     this.gl = canvas.getContext("webgl2");
     this._setupProgram();
     this._initializePointers();
@@ -12,6 +12,10 @@ export default class Renderer {
     this.gl.enable(this.gl.DEPTH_TEST);
     this._setupProjection();
     this._initializeCamera();
+    this.loadedTextures = null;
+    if (textures) {
+      this.loadedTextures = this._loadTextures(textures);
+    }
   }
 
   _setupProgram() {
@@ -73,6 +77,7 @@ export default class Renderer {
         model: getUniformLocation("u_model_matrix"),
         view: getUniformLocation("u_view_matrix"),
         projection: getUniformLocation("u_projection_matrix"),
+        textureUnit: getUniformLocation("u_texture"),
       },
     };
   }
@@ -133,8 +138,23 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-    this._setTexture(object.texturePath);
     this._setTextureCoords(object.textureCoords);
+
+    // check the maximum texture units
+    // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
+    // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+    // console.log(maxTextureUnits);
+
+    if (object.textureName) {
+      const textureName = object.textureName;
+      const { texture, textureUnitIndex } = this.loadedTextures[textureName];
+
+      // Activate the texture unit and bind the texture
+      this.gl.activeTexture(this.gl.TEXTURE0 + textureUnitIndex);
+      this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+      this.gl.uniform1i(this.pointers.uniforms.textureUnit, textureUnitIndex);
+    }
 
     this.gl.drawElements(
       this.gl.TRIANGLES,
@@ -198,14 +218,33 @@ export default class Renderer {
     this.gl.enableVertexAttribArray(this.pointers.attributes.color);
   }
 
-  _setTexture(texturePath) {
-    var texture = this.gl.createTexture();
-    const path = "./src/assets/" + texturePath;
+  // Texture functions
+  _loadTextures(textures) {
+    const loadedTextures = {};
+    let textureUnitIndex = 0;
 
-    // load an image
+    for (const textureName in textures) {
+      const texturePath = textures[textureName];
+      const texture = this._loadOneTexture(textureName, texturePath);
+      loadedTextures[textureName] = {
+        texture: texture,
+        textureUnitIndex: textureUnitIndex,
+      };
+
+      // Increment the texture unit index for the next texture
+      textureUnitIndex++;
+    }
+    return loadedTextures;
+  }
+
+  _loadOneTexture(textureName, texturePath) {
+    const texture = this.gl.createTexture();
+    this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+    // Load the texture image
     const image = new Image();
+    const path = "./src/assets/" + texturePath;
     image.src = path;
-
     image.onload = () => {
       this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
       this.gl.texImage2D(
@@ -216,8 +255,6 @@ export default class Renderer {
         this.gl.UNSIGNED_BYTE,
         image
       );
-      // clamp the texture to the surface
-      // note this supposedly won't work in circles
       this.gl.texParameteri(
         this.gl.TEXTURE_2D,
         this.gl.TEXTURE_WRAP_S,
@@ -234,6 +271,8 @@ export default class Renderer {
         this.gl.LINEAR
       );
     };
+
+    return texture;
   }
 
   _setTextureCoords(textureCoords) {
@@ -256,7 +295,6 @@ export default class Renderer {
   }
 
   // public methods
-
   renderObjects(objects) {
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);

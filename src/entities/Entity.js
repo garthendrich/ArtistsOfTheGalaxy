@@ -19,7 +19,7 @@ export default class Entity {
     this.textureCoords = textureCoords;
   }
 
-  setTextureImage(texturePath) {
-    this.texturePath = texturePath;
+  setTexture(textureName) {
+    this.textureName = textureName;
   }
 }

@@ -22,15 +22,30 @@ function main() {
   const movingSphere = new Sphere(5, [0, 0, -500]); // ! test/demo code
   movingSphere.moveRight(1); // ! test/demo code
 
-  const collectibles = [new Collectibles(20, [20, 30, 10])];
+  const collectibles = [
+    new Collectibles(20, [80, 30, 10]),
+    new Collectibles(20, [20, 30, 10]),
+    new Collectibles(20, [-40, 30, 10]),
+    new Collectibles(20, [-100, 30, 10]),
+  ];
 
   /** ---------------------------------
    * OBJECTS ends here
    * ----------------------------------
    */
 
+  /** ----------------------------------
+   *  Textures
+   *  ----------------------------------
+   */
+  const textures = {
+    SIZE: "size-texture.png",
+    SPEED: "speed-texture.png",
+    COLOR: "color-texture.png",
+  };
+
   const canvas = document.querySelector("#screen");
-  const renderer = new Renderer(canvas);
+  const renderer = new Renderer(canvas, textures);
 
   const SPEED = 1; // ! test/demo code
   const FARTHEST_Z = 500; // ! test/demo code
