@@ -22,4 +22,16 @@ export default class Entity {
   setTextureImage(texturePath) {
     this.texturePath = texturePath;
   }
+
+  getX() {
+    return this.origin[0];
+  }
+
+  getY() {
+    return this.origin[1];
+  }
+
+  getZ() {
+    return this.origin[2];
+  }
 }

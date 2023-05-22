@@ -1,4 +1,4 @@
-import addVertices from "../utils/addVertices.js";
+import addArrays from "../utils/addArrays.js";
 import Entity from "./Entity.js";
 
 export default class MovableEntity extends Entity {
@@ -11,7 +11,16 @@ export default class MovableEntity extends Entity {
   }
 
   updatePosition() {
-    this.origin = addVertices(this.origin, [this.dx, this.dy, this.dz]);
+    const deltaTime =
+      (Date.now() - (this.lastPositionUpdate ?? Date.now())) / 1000;
+
+    this.origin = addArrays(this.origin, [
+      this.dx * deltaTime,
+      this.dy * deltaTime,
+      this.dz * deltaTime,
+    ]);
+
+    this.lastPositionUpdate = Date.now();
   }
 
   moveLeft(movementSpeed) {
