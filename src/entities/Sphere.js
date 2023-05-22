@@ -20,8 +20,8 @@ export default class Sphere extends MovableEntity {
     const phiLength = Math.PI * 2;
     const thetaStart = 0;
     const thetaLength = Math.PI;
-    const widthSegments = 64;
-    const heightSegments = 64;
+    const widthSegments = 16;
+    const heightSegments = 16;
 
     let index = 0;
     const grid = [];
