@@ -75,7 +75,6 @@ export default class Sphere extends MovableEntity {
         if (iy !== heightSegments - 1) indices.push(b, c, d);
       }
     }
-
     return [indices, vertices];
   }
 }
