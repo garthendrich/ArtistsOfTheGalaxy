@@ -70,7 +70,11 @@ function main() {
       // // AFter updating position, check if bullet collided with planet
       for (let index = 0; index < planets.length; index++) {
         
-        hasCollided("sphereToSphere", planets[index], bullet);
+        // if it has collided, 
+        if(hasCollided("sphereToSphere", planets[index], bullet)){
+          bullets.splice(bulletIndex, 1);
+        }
+
         
       }
     }
