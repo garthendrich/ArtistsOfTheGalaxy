@@ -17,28 +17,28 @@ function main() {
    * OBJECTS starts here
    * ----------------------------------
    */
-  let ships = [new Ship([-60, -20, -150])];
+  let ships = [new Ship(10, [0, -20, -150])];
 
   const planets = [
     new Sphere(10, [20, 30, -350]),
-    // new Sphere(20, [-60, -20, -450]),
-    // new Sphere(20, [-60, 50, -360]),
-    // new Sphere(20, [40, 0, -300]),
-    // new Sphere(30, [110, -150, -600]),
-    // new Sphere(30, [-300, -220, -900]),
+    new Sphere(20, [-60, -20, -450]),
+    new Sphere(20, [-60, 50, -360]),
+    new Sphere(20, [40, 0, -300]),
+    new Sphere(30, [110, -150, -600]),
+    new Sphere(30, [-300, -220, -900]),
   ];
 
   const bullets = [];
 
   const collectibles = [
-    new Collectibles(20, [80, 30, 10]),
-    new Collectibles(20, [20, 30, 10]),
-    new Collectibles(20, [-40, 30, 10]),
-    new Collectibles(20, [-100, 30, 10]),
-    new Collectibles(20, [80, -20, 10]),
-    new Collectibles(20, [20, -20, 10]),
-    new Collectibles(20, [-40, -20, 10]),
-    new Collectibles(20, [-100, -20, 10]),
+    new Collectibles(20, [80, 30, -500]),
+    new Collectibles(20, [20, 30, -500]),
+    new Collectibles(20, [-40, 30, -500]),
+    new Collectibles(20, [-100, 30, -500]),
+    new Collectibles(20, [80, -20, -500]),
+    new Collectibles(20, [20, -20, -500]),
+    new Collectibles(20, [-40, -20, -500]),
+    new Collectibles(20, [-100, -20, -500]),
   ];
 
   /** ---------------------------------
@@ -51,6 +51,7 @@ function main() {
    *  ----------------------------------
    */
   const textures = {
+    DEFAULT: "white-texture.jpeg",
     SIZE: "size-texture.png",
     SPEED: "speed-texture.png",
     COLOR: "color-texture.png",
@@ -105,7 +106,7 @@ function main() {
       ship.updatePosition();
     }
 
-    const objects = [...planets, ...bullets, ...collectibles, ...ships];
+    const objects = [...planets, ...bullets, ...ships, ...collectibles];
     renderer.renderObjects(objects);
 
     currentTime = Date.now();

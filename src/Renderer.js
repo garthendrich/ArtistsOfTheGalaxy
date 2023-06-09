@@ -140,7 +140,6 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-    this._setTextureCoords(object.textureCoords);
 
     // check the maximum texture units
     // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
@@ -149,6 +148,7 @@ export default class Renderer {
 
     // if the object has a texture
     if (object.textureName) {
+      this._setTextureCoords(object.textureCoords);
       // get the texture name (refer to Entity.js)
       const textureName = object.textureName;
       // get the texture and texture unit
@@ -238,7 +238,7 @@ export default class Renderer {
    */
   _loadTextures(textures) {
     const loadedTextures = {};
-    let textureUnitIndex = 0;
+    let textureUnitIndex = 1;
 
     for (const textureName in textures) {
       // create a texture in webgl for each texture

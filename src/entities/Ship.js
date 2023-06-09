@@ -1,16 +1,17 @@
 import MovableEntity from "./MovableEntity.js";
 
 export default class Ship extends MovableEntity {
-  constructor(origin) {
+  constructor(length, origin) {
     super(origin);
-
-    const [indices, vertices] = this._generateVertices();
+    let span = length * 2;
+    const [indices, vertices] = this._generateVertices(span, length);
 
     this.setIndices(indices);
     this.setVertices(vertices);
+    this.setTexture("DEFAULT");
   }
 
-  _generateVertices() {
+  _generateVertices(span, length) {
     let indices = [];
 
     let vertices = [];
@@ -18,49 +19,49 @@ export default class Ship extends MovableEntity {
     // Define the vertices of the spaceship
     vertices = [
       // Body
-      -0.5,
+      -length,
       0.0,
-      0.5, // Vertex 0
-      0.5,
+      length, // Vertex 0
+      length,
       0.0,
-      0.5, // Vertex 1
-      -0.5,
+      length, // Vertex 1
+      -length,
       0.0,
-      -0.5, // Vertex 2
-      0.5,
+      -length, // Vertex 2
+      length,
       0.0,
-      -0.5, // Vertex 3
+      -length, // Vertex 3
       0.0,
-      1.0,
+      span,
       0.0, // Vertex 4 (top point)
 
       // Wing 1
       0.0,
       0.0,
-      0.5, // Vertex 5
-      1.0,
+      length, // Vertex 5
+      span,
       0.0,
-      0.5, // Vertex 6
+      length, // Vertex 6
       0.0,
       0.0,
-      -0.5, // Vertex 7
-      1.0,
+      -length, // Vertex 7
+      span,
       0.0,
-      -0.5, // Vertex 8
+      -length, // Vertex 8
 
       // Wing 2
-      -1.0,
+      -span,
       0.0,
-      0.5, // Vertex 9
-      0.0,
-      0.0,
-      0.5, // Vertex 10
-      -1.0,
-      0.0,
-      -0.5, // Vertex 11
+      length, // Vertex 9
       0.0,
       0.0,
-      -0.5, // Vertex 12
+      length, // Vertex 10
+      -span,
+      0.0,
+      -length, // Vertex 11
+      0.0,
+      0.0,
+      -length, // Vertex 12
     ];
 
     // Define the indices that connect the vertices to form triangles
