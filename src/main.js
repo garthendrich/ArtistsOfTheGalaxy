@@ -30,15 +30,41 @@ function main() {
 
   const bullets = [];
 
-  const collectibles = [new Collectibles(20, [20, 30, -100])];
+  const collectibles = [
+    new Collectibles(20, [80, 30, 10]),
+    new Collectibles(20, [20, 30, 10]),
+    new Collectibles(20, [-40, 30, 10]),
+    new Collectibles(20, [-100, 30, 10]),
+    new Collectibles(20, [80, -20, 10]),
+    new Collectibles(20, [20, -20, 10]),
+    new Collectibles(20, [-40, -20, 10]),
+    new Collectibles(20, [-100, -20, 10]),
+  ];
 
   /** ---------------------------------
    * OBJECTS ends here
    * ----------------------------------
    */
 
+  /** ----------------------------------
+   *  Textures
+   *  ----------------------------------
+   */
+  const textures = {
+    SIZE: "size-texture.png",
+    SPEED: "speed-texture.png",
+    COLOR: "color-texture.png",
+  };
+
+  /** ----------------------------------
+   *  Renderer proper
+   *  ----------------------------------
+   */
+
   const canvas = document.querySelector("#screen");
-  const renderer = new Renderer(canvas);
+  const renderer = new Renderer(canvas, textures);
+
+  // Animation
 
   let currentTime = Date.now();
   let lastFrameTime = 0;

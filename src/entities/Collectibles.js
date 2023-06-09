@@ -15,13 +15,13 @@ export default class Collectibles extends Entity {
     // will contain repeated copies of the default color
     const colors = this._generateColors(indices);
     const textureCoords = this._generateTextureVertices();
-    const texturePath = this._generateTexturePath();
+    const textureName = this._generateTextureName();
 
     this.setIndices(indices);
     this.setVertices(vertices);
     this.setColors(colors);
     this.setTextureCoords(textureCoords);
-    this.setTextureImage(texturePath);
+    this.setTexture(textureName);
   }
 
   _generateVertices(length) {
@@ -189,15 +189,8 @@ export default class Collectibles extends Entity {
     return vertices;
   }
 
-  _generateTexturePath() {
-    switch (this.selectedBehavior) {
-      case "SPEED":
-        return "speed-texture.png";
-      case "COLOR":
-        return "color-texture.png";
-      case "SIZE":
-        return "size-texture.png";
-    }
+  _generateTextureName() {
+    return this.selectedBehavior;
   }
 
   _generateColors(indices) {
