@@ -102,7 +102,7 @@ function main() {
           bulletColor = attribute;
           
         }else if (behavior == "SIZE"){
-          bulletSize = bulletSize * attribute;
+          bulletSize = 1 * attribute;
         }else if (behavior == "SPEED"){
           shipSpeed = 50 * attribute;
         }
