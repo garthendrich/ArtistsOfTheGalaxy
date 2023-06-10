@@ -13,6 +13,11 @@ export default class Entity {
     this.vertices = vertices;
   }
 
+  setColor(color){
+    this.color = color;
+    this.setColors(this.generateColors(this.getIndices()));
+  }
+
   setColors(colors) {
     this.colors = colors;
   }
@@ -35,6 +40,10 @@ export default class Entity {
 
   getZ() {
     return this.origin[2];
+  }
+
+  getIndices(){
+    return this.indices;
   }
 
   generateColors(indices) {

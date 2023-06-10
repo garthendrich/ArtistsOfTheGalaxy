@@ -62,7 +62,7 @@ function main() {
   let fpsCounter = 0;
 
   let lastBulletFireTime = 0;
-  let willFireBullet = false;
+  let willFireBullet = true;
   let willMove = false;
 
   let lastPlanetSpawn = 0;
@@ -168,6 +168,8 @@ function main() {
       ships[0].getZ(),
     ]);
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
+    let color = [1,0.2,0.3,1];
+    bullet.setColor(color);
     bullet.moveBack(512);
     bullets.push(bullet);
 
