@@ -34,6 +34,8 @@ function main() {
   const collectibles = [];
 
   let bulletColor = [1,1,1,1];
+  let shipSpeed = 50;
+  let bulletSize = 1;
 
   /** ---------------------------------
    * OBJECTS ends here
@@ -93,6 +95,22 @@ function main() {
       spawnCollectible();
     }else{
       if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])){
+        let behavior = collectibles[0].behavior;
+        let attribute = collectibles[0].attribute;
+
+        if (behavior == "COLOR"){
+          bulletColor = attribute;
+          bulletSize = 1;
+          shipSpeed = 50;
+        }else if (behavior == "SIZE"){
+          bulletSize +=attribute;
+          bulletColor = [1,1,1,1];
+          shipSpeed = 50;
+        }else if (behavior == "SPEED"){
+          shipSpeed = 50 * attribute;
+          bulletSize = 1
+          bulletColor = [1,1,1,1];
+        }
         collectibles.pop();
       }
     }
@@ -184,7 +202,7 @@ function main() {
       ships[0].getY(),
       ships[0].getZ(),
     ]);
-    const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
+    const bullet = new Sphere(bulletSize, bulletSpawnPosition, [0, 1, 4]);
     bullet.setColor(bulletColor);
     bullet.moveBack(512);
     bullets.push(bullet);
@@ -225,13 +243,13 @@ function main() {
 
   function moveShip(code) {
     if (code === "KeyW") {
-      ships[0].moveUp(50);
+      ships[0].moveUp(shipSpeed);
     } else if (code === "KeyA") {
-      ships[0].moveLeft(50);
+      ships[0].moveLeft(shipSpeed);
     } else if (code === "KeyS") {
-      ships[0].moveDown(50);
+      ships[0].moveDown(shipSpeed);
     } else if (code === "KeyD") {
-      ships[0].moveRight(50);
+      ships[0].moveRight(shipSpeed);
     }
   }
 
