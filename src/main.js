@@ -1,12 +1,15 @@
 import {
   BULLET_INTERVAL_TIME,
   BULLET_MAX_DISTANCE_FROM_SHIP,
+  PLANET_INTERVAL_TIME,
+  PLANET_MAX_DISTANCE_FROM_SHIP,
 } from "./config.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
 import Ship from "./entities/Ship.js";
 import Renderer from "./Renderer.js";
 import addArrays from "./utils/addArrays.js";
+import { getRandomNumber } from "./utils/randomizer.js";
 
 let code = "temp";
 
@@ -17,7 +20,7 @@ function main() {
    * OBJECTS starts here
    * ----------------------------------
    */
-  let ships = [new Ship(10, [0, -20, -150])];
+  const ships = [new Ship(10, [0, -20, -150])];
 
   const planets = [
     new Sphere(10, [20, 30, -350]),
@@ -75,6 +78,8 @@ function main() {
   let willFireBullet = false;
   let willMove = false;
 
+  let lastPlanetSpawn = 0;
+
   window.requestAnimationFrame(loop);
 
   function loop() {
@@ -85,7 +90,12 @@ function main() {
       lastFrameTime = currentTime;
     }
 
-    if (willFireBullet) spawnBullet();
+    if (willFireBullet) {
+      spawnBullet();
+    }
+
+    // UNCOMMENT TO SPAWN PLANETS
+    spawnPlanet();
 
     if (willMove) moveShip(code);
     else stopShip();
@@ -99,6 +109,18 @@ function main() {
       }
 
       bullet.updatePosition();
+    }
+
+    // updates and destroys planets based on position
+    for (const [planetIndex, planet] of planets.entries()) {
+      const planetDistanceFromShip =
+        renderer.camera.position[2] + planet.getZ(); // ! change camera z position to ship z: ship.getZ()
+      if (planetDistanceFromShip > PLANET_MAX_DISTANCE_FROM_SHIP) {
+        planets.splice(planetIndex, 1);
+        continue;
+      }
+
+      planet.updatePosition();
     }
 
     for (const [shipIndex, ship] of ships.entries()) {
@@ -139,13 +161,33 @@ function main() {
 
   function spawnBullet() {
     if (currentTime - lastBulletFireTime < BULLET_INTERVAL_TIME) return;
-
-    const bulletSpawnPosition = addArrays(renderer.camera.position, [0, -4, 0]); // ! change based on ship
+    const bulletSpawnPosition = addArrays(renderer.camera.position, [
+      ships[0].getX(),
+      ships[0].getY(),
+      ships[0].getZ(),
+    ]);
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
     bullet.moveBack(512);
     bullets.push(bullet);
 
     lastBulletFireTime = currentTime;
+  }
+
+  // spawns planets
+  function spawnPlanet() {
+    if (currentTime - lastPlanetSpawn < PLANET_INTERVAL_TIME) return;
+    const planetX = getRandomNumber(-15, 15) * 10;
+    const planetY = getRandomNumber(-15, 15) * 10;
+    const planetSpawnPosition = addArrays(renderer.camera.position, [
+      planetX,
+      planetY,
+      -1500,
+    ]);
+    const planet = new Sphere(10, planetSpawnPosition);
+    planet.moveForth(300);
+    planets.push(planet);
+
+    lastPlanetSpawn = currentTime;
   }
 
   function moveShip(code) {
