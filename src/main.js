@@ -3,6 +3,7 @@ import {
   BULLET_MAX_DISTANCE_FROM_SHIP,
   PLANET_INTERVAL_TIME,
   PLANET_MAX_DISTANCE_FROM_SHIP,
+  COLLECTIBLE_INTERVAL_TIME,
 } from "./config.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
@@ -24,28 +25,11 @@ function main() {
    */
   const ships = [new Ship(10, [0, -20, -150])];
 
-  const planets = [
-    new Sphere(10, [20, 30, -350]),
-    new Sphere(20, [-60, -20, -450]),
-    new Sphere(20, [-60, 50, -360]),
-    new Sphere(20, [40, 0, -300]),
-    new Sphere(30, [110, -150, -600]),
-    new Sphere(30, [-300, -220, -900]),
-    new Sphere(30, [0, 0, -900]), // for bullet colliding test
-  ];
+  const planets = [];
 
   const bullets = [];
 
-  const collectibles = [
-    new Collectibles(20, [80, 30, -500]),
-    new Collectibles(20, [20, 30, -500]),
-    new Collectibles(20, [-40, 30, -500]),
-    new Collectibles(20, [-100, 30, -500]),
-    new Collectibles(20, [80, -20, -500]),
-    new Collectibles(20, [20, -20, -500]),
-    new Collectibles(20, [-40, -20, -500]),
-    new Collectibles(20, [-100, -20, -500]),
-  ];
+  const collectibles = [];
 
   /** ---------------------------------
    * OBJECTS ends here
@@ -82,6 +66,7 @@ function main() {
   let willMove = false;
 
   let lastPlanetSpawn = 0;
+  let lastCollectibleSpawn = 0;
 
   window.requestAnimationFrame(loop);
 
@@ -99,6 +84,8 @@ function main() {
 
     // UNCOMMENT TO SPAWN PLANETS
     spawnPlanet();
+
+    if (collectibles.length === 0) spawnCollectible();
 
     if (willMove) moveShip(code);
     else stopShip();
@@ -132,6 +119,9 @@ function main() {
 
       planet.updatePosition();
     }
+
+    //NOTE: ADD HERE COLLISION DESTRUCTION OF COLLECTIBLES
+    //set lastCollectibleSpawn equal to currentTime
 
     for (const [shipIndex, ship] of ships.entries()) {
       console.log(shipIndex);
@@ -169,6 +159,7 @@ function main() {
       willMove = false;
   });
 
+  //spawns bullets
   function spawnBullet() {
     if (currentTime - lastBulletFireTime < BULLET_INTERVAL_TIME) return;
     const bulletSpawnPosition = addArrays(renderer.camera.position, [
@@ -191,13 +182,26 @@ function main() {
     const planetSpawnPosition = addArrays(renderer.camera.position, [
       planetX,
       planetY,
-      -1500,
+      -2000,
     ]);
-    const planet = new Sphere(10, planetSpawnPosition);
+    const planetRad = getRandomNumber(1, 4) * 10;
+    const planet = new Sphere(planetRad, planetSpawnPosition);
     planet.moveForth(300);
     planets.push(planet);
 
     lastPlanetSpawn = currentTime;
+  }
+
+  // spawns collectibles
+  function spawnCollectible() {
+    if (currentTime - lastCollectibleSpawn < COLLECTIBLE_INTERVAL_TIME) return;
+    const collectibleX = getRandomNumber(-6, 6) * 10;
+    const collectibleY = getRandomNumber(-6, 6) * 10;
+
+    const collectible = new Collectibles(8, [collectibleX, collectibleY, -150]);
+    collectibles.push(collectible);
+
+    lastCollectibleSpawn = currentTime;
   }
 
   function moveShip(code) {
