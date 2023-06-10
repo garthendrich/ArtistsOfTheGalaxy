@@ -13,7 +13,7 @@ export default class Collectibles extends Entity {
 
     const [indices, vertices] = this._generateVertices(length);
     // will contain repeated copies of the default color
-    const colors = this._generateColors(indices);
+    const colors = this.generateColors(indices);
     const textureCoords = this._generateTextureVertices();
     const textureName = this._generateTextureName();
 
@@ -191,17 +191,5 @@ export default class Collectibles extends Entity {
 
   _generateTextureName() {
     return this.selectedBehavior;
-  }
-
-  _generateColors(indices) {
-    let indicesCount = indices.length;
-    let colors = [];
-    for (let i = 0; i < indicesCount; i++) {
-      colors.push(this.color[0]);
-      colors.push(this.color[1]);
-      colors.push(this.color[2]);
-      colors.push(this.color[3]);
-    }
-    return colors;
   }
 }

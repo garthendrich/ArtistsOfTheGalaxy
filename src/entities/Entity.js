@@ -2,7 +2,7 @@ export default class Entity {
   constructor(origin = [0, 0, 0]) {
     this.origin = origin;
     this.textureName = "DEFAULT";
-    this.colors = [1, 1, 1, 1];
+    this.color = [1, 1, 1, 1];
   }
 
   setIndices(indices) {
@@ -35,5 +35,17 @@ export default class Entity {
 
   getZ() {
     return this.origin[2];
+  }
+
+  generateColors(indices) {
+    let indicesCount = indices.length;
+    let colors = [];
+    for (let i = 0; i < indicesCount; i++) {
+      colors.push(this.color[0]);
+      colors.push(this.color[1]);
+      colors.push(this.color[2]);
+      colors.push(this.color[3]);
+    }
+    return colors;
   }
 }

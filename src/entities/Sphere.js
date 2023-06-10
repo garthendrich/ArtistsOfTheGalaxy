@@ -5,7 +5,9 @@ export default class Sphere extends MovableEntity {
     super(origin);
 
     const [indices, vertices] = this._generateVertices(radius);
+    const colors = this.generateColors(indices);
 
+    this.setColors(colors);
     this.setIndices(indices);
     this.setVertices(vertices);
   }
