@@ -4,6 +4,8 @@ import {
   PLANET_INTERVAL_TIME,
   PLANET_MAX_DISTANCE_FROM_SHIP,
   COLLECTIBLE_INTERVAL_TIME,
+  SPHERE_SPHERE_COLLISION,
+  ENTITY_SHIP_COLLISION,
 } from "./config.js";
 import Collectibles from "./entities/Collectibles.js";
 import Sphere from "./entities/Sphere.js";
