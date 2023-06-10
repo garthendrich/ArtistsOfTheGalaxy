@@ -8,7 +8,6 @@ export default class Ship extends MovableEntity {
 
     this.setIndices(indices);
     this.setVertices(vertices);
-    this.setTexture("DEFAULT");
   }
 
   _generateVertices(span, length) {

@@ -1,6 +1,8 @@
 export default class Entity {
   constructor(origin = [0, 0, 0]) {
     this.origin = origin;
+    this.textureName = "DEFAULT";
+    this.colors = [1, 1, 1, 1];
   }
 
   setIndices(indices) {
