@@ -10,6 +10,14 @@ export default class Sphere extends MovableEntity {
     this.setColors(colors);
     this.setIndices(indices);
     this.setVertices(vertices);
+
+    // set an attribute: radius
+    this.radius = radius;
+  }
+
+  // method for getting the radius of the sphere object
+  getRadius() {
+    return this.radius;
   }
 
   _generateVertices(radius) {

@@ -9,6 +9,8 @@ import Sphere from "./entities/Sphere.js";
 import Ship from "./entities/Ship.js";
 import Renderer from "./Renderer.js";
 import addArrays from "./utils/addArrays.js";
+import { hasCollided } from "./events/objectCollision.js";
+
 import { getRandomNumber } from "./utils/randomizer.js";
 
 let code = "temp";
@@ -29,6 +31,7 @@ function main() {
     new Sphere(20, [40, 0, -300]),
     new Sphere(30, [110, -150, -600]),
     new Sphere(30, [-300, -220, -900]),
+    new Sphere(30, [0, 0, -900]), // for bullet colliding test
   ];
 
   const bullets = [];
@@ -109,6 +112,13 @@ function main() {
       }
 
       bullet.updatePosition();
+      // // AFter updating position, check if bullet collided with planet
+      for (let index = 0; index < planets.length; index++) {
+        // if it has collided,
+        if (hasCollided("sphereToSphere", planets[index], bullet)) {
+          bullets.splice(bulletIndex, 1);
+        }
+      }
     }
 
     // updates and destroys planets based on position
