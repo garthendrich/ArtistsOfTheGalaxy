@@ -95,24 +95,21 @@ function main() {
       spawnCollectible();
     }else{
       if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])){
-        let behavior = collectibles[0].behavior;
+        let behavior = collectibles[0].selectedBehavior;
         let attribute = collectibles[0].attribute;
 
-        if (behavior == "COLOR"){
+        if (behavior == "COLOR"){ 
           bulletColor = attribute;
-          bulletSize = 1;
-          shipSpeed = 50;
+          
         }else if (behavior == "SIZE"){
-          bulletSize +=attribute;
-          bulletColor = [1,1,1,1];
-          shipSpeed = 50;
+          bulletSize = bulletSize * attribute;
         }else if (behavior == "SPEED"){
           shipSpeed = 50 * attribute;
-          bulletSize = 1
-          bulletColor = [1,1,1,1];
         }
+        console.log(behavior, attribute);
         collectibles.pop();
         lastCollectibleSpawn = currentTime;
+      }
     }
     if (willMove) moveShip(code);
     else stopShip();
@@ -203,10 +200,9 @@ function main() {
       ships[0].getZ(),
     ]);
     const bullet = new Sphere(bulletSize, bulletSpawnPosition, [0, 1, 4]);
-    bullet.setColor(bulletColor);
     bullet.moveBack(512);
     bullets.push(bullet);
-
+    bullet.setColor(bulletColor);
     lastBulletFireTime = currentTime;
   }
 
@@ -235,7 +231,6 @@ function main() {
     const collectibleY = getRandomNumber(-6, 6) * 10;
 
     const collectible = new Collectibles(8, [collectibleX, collectibleY, -150]);
-    bulletColor = collectible.color;
     collectibles.push(collectible);
 
     lastCollectibleSpawn = currentTime;

@@ -149,7 +149,7 @@ export default class Collectibles extends Entity {
 
   _generateSize() {
     // bullet sizes
-    const sizes = [1, 2, 3, 4, 5];
+    const sizes = [2, 3, 4, 5,6];
     this.color = [1, 1, 1, 1];
     return this._selectItemFromArray(sizes, 0, sizes.length);
   }
