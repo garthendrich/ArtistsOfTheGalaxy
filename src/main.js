@@ -31,6 +31,8 @@ function main() {
 
   const collectibles = [];
 
+  let bulletColor = [1,1,1,1];
+
   /** ---------------------------------
    * OBJECTS ends here
    * ----------------------------------
@@ -85,7 +87,8 @@ function main() {
     // UNCOMMENT TO SPAWN PLANETS
     spawnPlanet();
 
-    if (collectibles.length === 0) spawnCollectible();
+    // if (collectibles.length === 0) 
+    spawnCollectible();
 
     if (willMove) moveShip(code);
     else stopShip();
@@ -168,8 +171,7 @@ function main() {
       ships[0].getZ(),
     ]);
     const bullet = new Sphere(1, bulletSpawnPosition, [0, 1, 4]);
-    let color = [1,0.2,0.3,1];
-    bullet.setColor(color);
+    bullet.setColor(bulletColor);
     bullet.moveBack(512);
     bullets.push(bullet);
 
@@ -201,6 +203,7 @@ function main() {
     const collectibleY = getRandomNumber(-6, 6) * 10;
 
     const collectible = new Collectibles(8, [collectibleX, collectibleY, -150]);
+    bulletColor = collectible.color;
     collectibles.push(collectible);
 
     lastCollectibleSpawn = currentTime;
