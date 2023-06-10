@@ -16,9 +16,9 @@ export function hasCollided(type, object1, object2) {
     console.log(distance < object1.getRadius() + object2.getRadius());
     return distance < object1.getRadius() + object2.getRadius();
   } else if (type === "entityToShip") {
-    const shipWidth = 0;
-    const shipHeight = 0;
-    const shipDepth = 0;
+    const shipWidth = 10;
+    const shipHeight = 10;
+    const shipDepth = 10;
 
     const shipBoundingBox = {
       minX: object1.getX() - shipWidth / 2,
@@ -29,9 +29,9 @@ export function hasCollided(type, object1, object2) {
       maxZ: object1.getZ() + shipDepth / 2,
     };
 
-    const objectWidth = 0;
-    const objectHeight = 0;
-    const objectDepth = 0;
+    const objectWidth = 8;
+    const objectHeight = 8;
+    const objectDepth = 8;
 
     const objectBoundingBox = {
       minX: object2.getX() - objectWidth / 2,

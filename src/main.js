@@ -91,7 +91,7 @@ function main() {
     // UNCOMMENT TO SPAWN PLANETS
     spawnPlanet();
 
-    if (collectibles.length === 0){
+    if (collectibles.length === 0) {
       spawnCollectible();
     }else{
       if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])){
@@ -112,7 +112,7 @@ function main() {
           bulletColor = [1,1,1,1];
         }
         collectibles.pop();
-      }
+        lastCollectibleSpawn = currentTime;
     }
     if (willMove) moveShip(code);
     else stopShip();
@@ -130,7 +130,7 @@ function main() {
       for (let index = 0; index < planets.length; index++) {
         // if it has collided,
         if (hasCollided(SPHERE_SPHERE_COLLISION, planets[index], bullet)) {
-          console.log("HIT!!!");
+          console.log("NICE!");
           planets[index].setColor(bulletColor);
           bullets.splice(bulletIndex, 1);
         }
@@ -186,13 +186,13 @@ function main() {
       event.code === "KeyS" ||
       event.code === "KeyD"
     ) {
-      if (event.code === code) { // Check if the released key matches the currently held key
+      if (event.code === code) {
+        // Check if the released key matches the currently held key
         willMove = false;
         code = ""; // Reset the code variable
       }
     }
   });
-  
 
   //spawns bullets
   function spawnBullet() {
