@@ -12,6 +12,7 @@ export default class Renderer {
     this.gl.enable(this.gl.DEPTH_TEST);
     this._setupProjection();
     this._initializeCamera();
+    this._setupLightValues();
     this.loadedTextures = null;
     if (textures) {
       this.loadedTextures = this._loadTextures(textures);
@@ -40,6 +41,15 @@ export default class Renderer {
     }
 
     this.gl.useProgram(this.program);
+  }
+
+  _setupLightValues() {
+    // Define light properties
+    this.lightDirection = [1, 1, 1, 0.0]; // Example light direction
+
+    // Set ambient and diffuse light colors and intensities
+    this.ambientLight = [0.8, 0.8, 0.8, 1.0];
+    this.diffuseLight = [1, 1, 1, 1.0];
   }
 
   _loadShader(type, sourceCode) {
@@ -74,6 +84,9 @@ export default class Renderer {
         textureCoord: getAttribLocation("a_texcoord"),
       },
       uniforms: {
+        lightDirection: getUniformLocation("u_light_direction"),
+        ambientLight: getUniformLocation("u_ambient_light"),
+        diffuseLight: getUniformLocation("u_diffuse_light"),
         model: getUniformLocation("u_model_matrix"),
         view: getUniformLocation("u_view_matrix"),
         projection: getUniformLocation("u_projection_matrix"),
@@ -140,7 +153,7 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-
+    this._setLightComponents();
     // check the maximum texture units
     // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
     // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
@@ -318,6 +331,19 @@ export default class Renderer {
     this.gl.enableVertexAttribArray(this.pointers.attributes.textureCoord);
   }
 
+  _setLightComponents() {
+    const lightDirectionMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.fromTranslation(lightDirectionMatrix, this.lightDirection);
+
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.lightDirection,
+      false,
+      this.lightDirection
+    );
+    this.gl.uniform4fv(this.pointers.uniforms.ambientLight, this.ambientLight);
+    this.gl.uniform4fv(this.pointers.uniforms.diffuseLight, this.diffuseLight);
+  }
+
   /** ------------------------
    *  PUBLIC METHODS
    * -------------------------
@@ -332,5 +358,17 @@ export default class Renderer {
   moveCamera(x, y, z) {
     this.camera.position = addArrays(this.camera.position, [x, y, z]);
     this._updateCamera();
+  }
+
+  setLightDirection(direction) {
+    this.lightDirection = direction;
+  }
+
+  setAmbientLight(light) {
+    this.ambientLight = light;
+  }
+
+  setDiffuseLight(light) {
+    this.diffuseLight = light;
   }
 }
