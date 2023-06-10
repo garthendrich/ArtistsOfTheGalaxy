@@ -66,7 +66,7 @@ function main() {
   let fpsCounter = 0;
 
   let lastBulletFireTime = 0;
-  let willFireBullet = true;
+  let willFireBullet = false;
   let willMove = false;
 
   let lastPlanetSpawn = 0;
@@ -89,9 +89,13 @@ function main() {
     // UNCOMMENT TO SPAWN PLANETS
     spawnPlanet();
 
-    // if (collectibles.length === 0) 
-    spawnCollectible();
-
+    if (collectibles.length === 0){
+      spawnCollectible();
+    }else{
+      if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])){
+        collectibles.pop();
+      }
+    }
     if (willMove) moveShip(code);
     else stopShip();
 
@@ -107,7 +111,9 @@ function main() {
       // // AFter updating position, check if bullet collided with planet
       for (let index = 0; index < planets.length; index++) {
         // if it has collided,
-        if (hasCollided("sphereToSphere", planets[index], bullet)) {
+        if (hasCollided(SPHERE_SPHERE_COLLISION, planets[index], bullet)) {
+          console.log("HIT!!!");
+          planets[index].setColor(bulletColor);
           bullets.splice(bulletIndex, 1);
         }
       }
@@ -154,15 +160,21 @@ function main() {
   });
 
   window.addEventListener("keyup", (event) => {
-    if (event.code === "Space") willFireBullet = false;
-    else if (
+    if (event.code === "Space") {
+      willFireBullet = false;
+    } else if (
       event.code === "KeyW" ||
       event.code === "KeyA" ||
       event.code === "KeyS" ||
       event.code === "KeyD"
-    )
-      willMove = false;
+    ) {
+      if (event.code === code) { // Check if the released key matches the currently held key
+        willMove = false;
+        code = ""; // Reset the code variable
+      }
+    }
   });
+  
 
   //spawns bullets
   function spawnBullet() {
@@ -188,7 +200,7 @@ function main() {
     const planetSpawnPosition = addArrays(renderer.camera.position, [
       planetX,
       planetY,
-      -2000,
+      -3000,
     ]);
     const planetRad = getRandomNumber(1, 4) * 10;
     const planet = new Sphere(planetRad, planetSpawnPosition);
