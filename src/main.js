@@ -51,6 +51,7 @@ function main() {
     SIZE: "size-texture.png",
     SPEED: "speed-texture.png",
     COLOR: "color-texture.png",
+    PLANET: "planet-texture.png",
   };
 
   /** ----------------------------------
@@ -217,7 +218,7 @@ function main() {
       -3000,
     ]);
     const planetRad = getRandomNumber(1, 4) * 10;
-    const planet = new Sphere(planetRad, planetSpawnPosition);
+    const planet = new Sphere(planetRad, planetSpawnPosition, true);
     planet.moveForth(300);
     planets.push(planet);
 

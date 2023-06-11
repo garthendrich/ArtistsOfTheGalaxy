@@ -1,15 +1,21 @@
 import MovableEntity from "./MovableEntity.js";
 
 export default class Sphere extends MovableEntity {
-  constructor(radius = 1, origin) {
+  constructor(radius = 1, origin, isPlanet = false) {
     super(origin);
-
+    console.log(isPlanet);
     const [indices, vertices] = this._generateVertices(radius);
     const colors = this.generateColors(indices);
 
     this.setColors(colors);
     this.setIndices(indices);
     this.setVertices(vertices);
+    if (isPlanet === true){
+      const textureCoords = this._generateTextureVertices();
+      this.setTextureCoords(textureCoords);
+      this.setTexture("PLANET");
+    }
+    
 
     // set an attribute: radius
     this.radius = radius;
@@ -86,5 +92,24 @@ export default class Sphere extends MovableEntity {
       }
     }
     return [indices, vertices];
+  }
+
+  _generateTextureVertices() {
+    const latitudeBands = 30;
+    const longitudeBands = 30;
+
+    const vertices = [];
+
+    for (let latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+      for (let longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+        const u = longNumber / longitudeBands;
+        const v = latNumber / latitudeBands;
+
+        vertices.push(u, v);
+      }
+    }
+
+
+    return vertices;
   }
 }
