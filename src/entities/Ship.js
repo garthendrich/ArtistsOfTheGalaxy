@@ -19,47 +19,45 @@ export default class Ship extends MovableEntity {
 
     const vertices = [
       // Main body vertices
-      -1,
-      1,
-      -4, // Vertex 0
-      -1,
-      -1,
-      -4, // Vertex 1
-      1,
-      -1,
-      -4, // Vertex 2
-      1,
-      1,
-      -4, // Vertex 3
-      -1,
-      1,
-      2, // Vertex 4
-      -1,
-      -1,
-      2, // Vertex 5
-      1,
-      -1,
-      2, // Vertex 6
-      1,
-      1,
-      2, // Vertex 7
+      -4,
+      4,
+      -16, // Vertex 0
+      -4,
+      -4,
+      -16, // Vertex 1
+      4,
+      -4,
+      -16, // Vertex 2
+      4,
+      4,
+      -16, // Vertex 3
+      -4,
+      4,
+      8, // Vertex 4
+      -4,
+      -4,
+      8, // Vertex 5
+      4,
+      -4,
+      8, // Vertex 6
+      4,
+      4,
+      8, // Vertex 7
 
       // Wings vertices
-      -3,
+      -12,
       0,
-      -2, // Vertex 8
-      3,
+      -8, // Vertex 8
+      12,
       0,
-      -2, // Vertex 9
-      -2,
+      -8, // Vertex 9
+      -8,
       0,
-      -6, // Vertex 10
-      2,
+      -24, // Vertex 10
+      8,
       0,
-      -6, // Vertex 11
+      -24, // Vertex 11
     ];
-
-    for (let i = 0; i < vertices.length; i++) vertices[i] *= 4;
 
     // Define the indices for the jet model
     const indices = [
