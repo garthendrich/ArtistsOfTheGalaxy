@@ -25,8 +25,9 @@ Spacebar - shoot bullets
       * Speed - Changes the speed of the ship movement, can make the ship move faster or slower.
       * Size - Changes the bullet size, can either increase or decrease the bullet size.
 
-Additional: There are 6 backgrounds which is randomized upon the loading of the page.
+Additional: There are 6 backgrounds that are randomized upon the loading of the page.
 # Dependencies
+1. glMatrix.js (provided in the CMSC 161 Laboratory Class)
 
 # Setting up for Development
 
@@ -40,3 +41,18 @@ Additional: There are 6 backgrounds which is randomized upon the loading of the 
 - Jonahlee Xyrkcysz Fabula (jafabula@up.edu.ph)
 - Garth Hendrich Lapitan (gclapitan@up.edu.ph)
 - Jan Coleen Estilo (jsestilo@up.edu.ph)
+
+# Copyright Use
+ Background images and Planet textures are not owned by the developers. They are only used here for academic purposes and demonstration of this project.
+
+ Here are the links of the images:
+     * https://www.artstation.com/artwork/aRbm2R
+     * https://www.freepik.com/free-vector/venus-planet-transparent-with-venus-texture-map_19377572.htm#query=planet%20texture&position=6&from_view=keyword&track=ais
+     * https://www.deviantart.com/kvikki/art/Earth-like-Planet-Texture-466813840
+     * https://forums.evga.com/Planet-Textures-m1430897.aspx
+     * https://unsplash.com/photos/0o_GEzyargo
+     * https://unsplash.com/photos/RF4p4rTM-2s
+     * https://unsplash.com/photos/f7YQo-eYHdM
+     * https://unsplash.com/photos/uXchDIKs4qI
+     * https://unsplash.com/photos/kEEl9csCutg
+     * https://unsplash.com/photos/1vKTnwLMdqs
