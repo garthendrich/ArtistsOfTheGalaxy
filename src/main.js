@@ -2,10 +2,10 @@ import Collectibles from "./entities/Collectibles.js";
 import Ship from "./entities/Ship.js";
 import Sphere from "./entities/Sphere.js";
 import { hasCollided } from "./events/objectCollision.js";
-import addArrays from "./utils/addArrays.js";
 import { getRandomNumber } from "./utils/randomizer.js";
 
 import {
+  BIGGEST_PLANET_RADIUS,
   SHIP_Z_DISTANCE_FROM_CAMERA,
   FAR_BOUND,
   BULLET_INTERVAL_TIME,
@@ -14,12 +14,10 @@ import {
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
   FIELD_OF_VIEW_DEGREES,
+  SMALLEST_PLANET_RADIUS,
 } from "./config.js";
 import { playerInputs } from "./playerInputs.js";
 import Renderer from "./Renderer.js";
-
-let shipHorizontalBound;
-let shipVerticalBound;
 
 /** ---------------------------------
  * OBJECTS starts here
@@ -67,8 +65,22 @@ const textures = {
 const canvas = document.querySelector("#screen");
 const renderer = new Renderer(canvas, textures);
 
+let currentTime = Date.now();
+let lastFrameTime = currentTime;
+let fpsCounter = 0;
+
+let lastBulletFireTime = 0;
+
+let lastPlanetSpawn = 0;
+let lastCollectibleSpawn = 0;
+
+let shipHorizontalBound;
+let shipVerticalBound;
+
 document.addEventListener("DOMContentLoaded", () => {
+  window.requestAnimationFrame(loop);
   resizeCanvas();
+
   window.addEventListener("resize", resizeCanvas);
 });
 
@@ -84,17 +96,6 @@ function resizeCanvas() {
   shipHorizontalBound =
     shipVerticalBound * (window.innerWidth / window.innerHeight);
 }
-
-let currentTime = Date.now();
-let lastFrameTime = 0;
-let fpsCounter = 0;
-
-let lastBulletFireTime = 0;
-
-let lastPlanetSpawn = 0;
-let lastCollectibleSpawn = 0;
-
-window.requestAnimationFrame(loop);
 
 function loop() {
   fpsCounter++;
@@ -159,16 +160,17 @@ function spawnBullet() {
 
 function spawnPlanet() {
   if (currentTime - lastPlanetSpawn < PLANET_INTERVAL_TIME) return;
-  const planetX = getRandomNumber(-15, 15) * 10;
-  const planetY = getRandomNumber(-15, 15) * 10;
-  const planetSpawnPosition = addArrays(renderer.camera.position, [
-    planetX,
-    planetY,
-    -3000,
-  ]);
-  const planetRad = getRandomNumber(1, 4) * 10;
+
+  const planetRad =
+    SMALLEST_PLANET_RADIUS +
+    getRandomNumber(0, BIGGEST_PLANET_RADIUS - SMALLEST_PLANET_RADIUS);
+
+  const planetX = getRandomNumber(-1, 1) * shipHorizontalBound;
+  const planetY = getRandomNumber(-1, 1) * shipVerticalBound;
+  const planetSpawnPosition = [planetX, planetY, -FAR_BOUND - planetRad];
+
   const planet = new Sphere(planetRad, planetSpawnPosition, true);
-  planet.moveForth(300);
+  planet.moveForth(256);
   planets.push(planet);
 
   lastPlanetSpawn = currentTime;
