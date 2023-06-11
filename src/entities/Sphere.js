@@ -11,12 +11,11 @@ export default class Sphere extends MovableEntity {
     this.setColors(colors);
     this.setIndices(indices);
     this.setVertices(vertices);
-    if (isPlanet === true){
+    if (isPlanet === true) {
       const textureCoords = this._generateTextureVertices();
       this.setTextureCoords(textureCoords);
       this.setTexture("PLANET" + Math.floor(getRandomNumber(1, 4)));
     }
-    
 
     // set an attribute: radius
     this.radius = radius;
@@ -96,14 +95,13 @@ export default class Sphere extends MovableEntity {
   }
 
   _generateTextureVertices() {
-
     const vertices = [];
     const totalLongitude = 10;
     const totalLatitude = 10;
 
-    for (u in Range(totalLatitude)){
-      for (v in Range(totalLongitude)){
-        vertices.push(u,v);
+    for (let u = 0; u < totalLatitude; u++) {
+      for (let v = 0; v < totalLongitude; v++) {
+        vertices.push(u, v);
       }
     }
 
