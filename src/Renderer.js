@@ -156,9 +156,11 @@ export default class Renderer {
   }
 
   _initializeLighting() {
+    this.lightDirection = [-1.0, -1.0, -2.0];
+
     this.gl.uniform3fv(
       this.pointers.uniforms.lightDirection,
-      [-1.0, -1.0, -2.0]
+      this.lightDirection
     );
   }
 
@@ -167,7 +169,18 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-    this._setNormals(object.normals);
+
+    if (object.normals) {
+      this._setNormals(object.normals);
+    } else {
+      const flatLightingNormals = this._generateFlatLightingNormals(
+        object.vertices.length,
+        this.lightDirection
+      );
+
+      this._setNormals(flatLightingNormals);
+    }
+
     // check the maximum texture units
     // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
     // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
@@ -194,6 +207,21 @@ export default class Renderer {
       this.gl.UNSIGNED_SHORT,
       0
     );
+  }
+
+  _generateFlatLightingNormals(verticesLength, lightDirection) {
+    const normal = glMatrix.vec3.create();
+    glMatrix.vec3.normalize(normal, [
+      -lightDirection[0],
+      -lightDirection[1],
+      -lightDirection[2],
+    ]);
+    console.log(normal);
+    return new Array(verticesLength / 3).fill([
+      normal[0],
+      normal[1],
+      normal[2],
+    ]);
   }
 
   /**-------------------------
@@ -267,7 +295,7 @@ export default class Renderer {
 
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
-      new Float32Array(normals),
+      new Float32Array(normals.flat(Infinity)),
       this.gl.STATIC_DRAW
     );
 
