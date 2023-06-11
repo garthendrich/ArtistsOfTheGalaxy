@@ -6,10 +6,9 @@ import addArrays from "./utils/addArrays.js";
 import { getRandomNumber } from "./utils/randomizer.js";
 
 import {
+  FAR_BOUND,
   BULLET_INTERVAL_TIME,
-  BULLET_MAX_DISTANCE_FROM_SHIP,
   PLANET_INTERVAL_TIME,
-  PLANET_MAX_DISTANCE_FROM_SHIP,
   COLLECTIBLE_INTERVAL_TIME,
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
@@ -92,68 +91,42 @@ function loop() {
   moveShip();
   spawnBullet();
   spawnPlanet();
+  spawnCollectible();
+  despawnFarOffBullets();
+  despawnPassedPlanets();
+  manageEntityCollisions();
 
-  if (collectibles.length === 0) {
-    spawnCollectible();
-  } else {
-    if (hasCollided(ENTITY_SHIP_COLLISION, ship, collectibles[0])) {
-      let behavior = collectibles[0].selectedBehavior;
-      let attribute = collectibles[0].attribute;
-
-      if (behavior == "COLOR") {
-        bulletColor = attribute;
-      } else if (behavior == "SIZE") {
-        bulletSize = 1 * attribute;
-      } else if (behavior == "SPEED") {
-        shipSpeed = 50 * attribute;
-      }
-      collectibles.pop();
-      lastCollectibleSpawn = currentTime;
-    }
+  const entities = [ship, ...bullets, ...planets, ...collectibles];
+  for (const entity of entities) {
+    entity.updatePosition();
   }
-
-  for (const [bulletIndex, bullet] of bullets.entries()) {
-    const bulletDistanceFromShip = renderer.camera.position[2] - bullet.getZ(); // ! change camera z position to ship z: ship.getZ()
-    if (bulletDistanceFromShip > BULLET_MAX_DISTANCE_FROM_SHIP) {
-      bullets.splice(bulletIndex, 1);
-      continue;
-    }
-
-    bullet.updatePosition();
-    // // AFter updating position, check if bullet collided with planet
-    for (let index = 0; index < planets.length; index++) {
-      // if it has collided,
-      if (hasCollided(SPHERE_SPHERE_COLLISION, planets[index], bullet)) {
-        if (bulletColor === [1, 1, 1, 1]) {
-          planets[index].setTexture("DEFAULT");
-        }
-        planets[index].setColor(bulletColor);
-        bullets.splice(bulletIndex, 1);
-      }
-    }
-  }
-
-  // updates and destroys planets based on position
-  for (const [planetIndex, planet] of planets.entries()) {
-    const planetDistanceFromShip = renderer.camera.position[2] + planet.getZ(); // ! change camera z position to ship z: ship.getZ()
-    if (planetDistanceFromShip > PLANET_MAX_DISTANCE_FROM_SHIP) {
-      planets.splice(planetIndex, 1);
-      continue;
-    }
-
-    planet.updatePosition();
-  }
-
-  //NOTE: ADD HERE COLLISION DESTRUCTION OF COLLECTIBLES
-  //set lastCollectibleSpawn equal to currentTime
-
-  ship.updatePosition();
-
-  const objects = [ship, ...bullets, ...planets, ...collectibles];
-  renderer.renderObjects(objects);
+  renderer.renderEntities(entities);
 
   currentTime = Date.now();
   window.requestAnimationFrame(loop);
+}
+
+function moveShip() {
+  const left = playerInputs.includes("KeyA");
+  const right = playerInputs.includes("KeyD");
+  const up = playerInputs.includes("KeyW");
+  const down = playerInputs.includes("KeyS");
+
+  if (left && !right && ship.origin[0] > shipBoundNegX) {
+    ship.moveLeft(shipSpeed);
+  } else if (right && !left && ship.origin[0] < shipBoundPosX) {
+    ship.moveRight(shipSpeed);
+  } else {
+    ship.stopXMovement();
+  }
+
+  if (up && !down && ship.origin[1] < shipBoundPosY) {
+    ship.moveUp(shipSpeed);
+  } else if (down && !up && ship.origin[1] > shipBoundNegY) {
+    ship.moveDown(shipSpeed);
+  } else {
+    ship.stopYMovement();
+  }
 }
 
 function spawnBullet() {
@@ -185,9 +158,10 @@ function spawnPlanet() {
   lastPlanetSpawn = currentTime;
 }
 
-// spawns collectibles
 function spawnCollectible() {
+  if (collectibles.length > 0) return;
   if (currentTime - lastCollectibleSpawn < COLLECTIBLE_INTERVAL_TIME) return;
+
   const collectibleX = getRandomNumber(-6, 6) * 10;
   const collectibleY = getRandomNumber(-6, 6) * 10;
 
@@ -197,25 +171,47 @@ function spawnCollectible() {
   lastCollectibleSpawn = currentTime;
 }
 
-function moveShip() {
-  const left = playerInputs.includes("KeyA");
-  const right = playerInputs.includes("KeyD");
-  const up = playerInputs.includes("KeyW");
-  const down = playerInputs.includes("KeyS");
+function despawnFarOffBullets() {
+  for (const [bulletIndex, bullet] of bullets.entries()) {
+    if (bullet.getZ() < -FAR_BOUND) {
+      bullets.splice(bulletIndex, 1);
+    }
+  }
+}
 
-  if (left && !right && ship.origin[0] > shipBoundNegX) {
-    ship.moveLeft(shipSpeed);
-  } else if (right && !left && ship.origin[0] < shipBoundPosX) {
-    ship.moveRight(shipSpeed);
-  } else {
-    ship.stopXMovement();
+function despawnPassedPlanets() {
+  for (const [planetIndex, planet] of planets.entries()) {
+    if (planet[2] > 100) {
+      planets.splice(planetIndex, 1);
+    }
+  }
+}
+
+function manageEntityCollisions() {
+  for (const [bulletIndex, bullet] of bullets.entries()) {
+    for (const planet of planets) {
+      if (hasCollided(SPHERE_SPHERE_COLLISION, planet, bullet)) {
+        planet.setColor(bulletColor);
+        bullets.splice(bulletIndex, 1);
+      }
+    }
   }
 
-  if (up && !down && ship.origin[1] < shipBoundPosY) {
-    ship.moveUp(shipSpeed);
-  } else if (down && !up && ship.origin[1] > shipBoundNegY) {
-    ship.moveDown(shipSpeed);
-  } else {
-    ship.stopYMovement();
+  for (const [collectibleIndex, collectible] of collectibles.entries()) {
+    if (hasCollided(ENTITY_SHIP_COLLISION, ship, collectible)) {
+      const behavior = collectible.selectedBehavior;
+      const attribute = collectible.attribute;
+
+      if (behavior == "COLOR") {
+        bulletColor = attribute;
+      } else if (behavior == "SIZE") {
+        bulletSize = 1 * attribute;
+      } else if (behavior == "SPEED") {
+        shipSpeed = 50 * attribute;
+      }
+      collectibles.splice(collectibleIndex, 1);
+
+      lastCollectibleSpawn = currentTime;
+    }
   }
 }
