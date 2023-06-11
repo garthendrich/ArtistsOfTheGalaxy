@@ -2,7 +2,7 @@ import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 import addArrays from "./utils/addArrays.js";
 
-import { FAR_BOUND } from "./config.js";
+import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "./config.js";
 
 export default class Renderer {
   constructor(canvas, textures = null) {
@@ -114,7 +114,7 @@ export default class Renderer {
 
     glMatrix.mat4.perspective(
       this.matrices.projection,
-      (45 * Math.PI) / 180,
+      (FIELD_OF_VIEW_DEGREES * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
       FAR_BOUND
