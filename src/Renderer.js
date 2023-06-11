@@ -157,7 +157,6 @@ export default class Renderer {
     // check the maximum texture units
     // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
     // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-    // console.log(maxTextureUnits);
 
     // if the object has a texture
     if (object.textureName) {

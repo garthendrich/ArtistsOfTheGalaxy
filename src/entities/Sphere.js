@@ -4,7 +4,6 @@ import { getRandomNumber } from "../utils/randomizer.js";
 export default class Sphere extends MovableEntity {
   constructor(radius = 1, origin, isPlanet = false) {
     super(origin);
-    console.log(isPlanet);
     const [indices, vertices, textureCoords] = this._generateVertices(radius);
     const colors = this.generateColors(indices);
 

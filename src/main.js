@@ -114,7 +114,6 @@ function main() {
         } else if (behavior == "SPEED") {
           shipSpeed = 50 * attribute;
         }
-        console.log(behavior, attribute);
         collectibles.pop();
         lastCollectibleSpawn = currentTime;
       }
@@ -159,8 +158,7 @@ function main() {
     //NOTE: ADD HERE COLLISION DESTRUCTION OF COLLECTIBLES
     //set lastCollectibleSpawn equal to currentTime
 
-    for (const [shipIndex, ship] of ships.entries()) {
-      console.log(shipIndex);
+    for (const ship of ships) {
       ship.updatePosition();
     }
 

@@ -3,8 +3,7 @@ import MovableEntity from "./MovableEntity.js";
 export default class Ship extends MovableEntity {
   constructor(length, origin) {
     super(origin);
-    let span = length * 2;
-    const [indices, vertices] = this._generateVertices(span, length);
+    const [indices, vertices] = this._generateVertices();
     const colors = this.generateColors(indices);
     const textureCoords = this._generateTextureVertices();
 
@@ -15,10 +14,9 @@ export default class Ship extends MovableEntity {
     this.setTexture("SHIP");
   }
 
-  _generateVertices(span, length) {
+  _generateVertices() {
     // Define the vertices for the jet model
 
-    console.log(span, length);
     const vertices = [
       // Main body vertices
       -1,
