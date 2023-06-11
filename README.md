@@ -46,6 +46,7 @@ Additional: There are 6 backgrounds that are randomized upon the loading of the 
  Background images and Planet textures are not owned by the developers. They are only used here for academic purposes and demonstration of this project.
 
  Here are the links of the images:
+ 
      * https://www.artstation.com/artwork/aRbm2R
      * https://www.freepik.com/free-vector/venus-planet-transparent-with-venus-texture-map_19377572.htm#query=planet%20texture&position=6&from_view=keyword&track=ais
      * https://www.deviantart.com/kvikki/art/Earth-like-Planet-Texture-466813840
