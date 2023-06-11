@@ -1,5 +1,5 @@
 # Project Name and Description
-**Ravagers of the Galaxy**
+**Ravagers of the Galaxy**  
 Ravagers of the Galaxy is a game type of screensaver created using WebGL. This is treated as a final project for CMSC 161 A.Y. 2022 - 2023. This project is about a spaceship in space on a quest to travel through the galaxy and shoot planets with its bullets.
 
 # Instructions of Usage
@@ -9,7 +9,7 @@ Ravagers of the Galaxy is a game type of screensaver created using WebGL. This i
 1. Run the application through the live demo below.
 
 ## Controls
-WASD - move the ship
+WASD - move the ship  
 Spacebar - shoot bullets
 
 # Features
