@@ -55,9 +55,9 @@ Here are the links of the images:
      * https://www.freepik.com/free-vector/venus-planet-transparent-with-venus-texture-map_19377572.htm#query=planet%20texture&position=6&from_view=keyword&track=ais
      * https://www.deviantart.com/kvikki/art/Earth-like-Planet-Texture-466813840
      * https://forums.evga.com/Planet-Textures-m1430897.aspx
-     * https://unsplash.com/photos/0o_GEzyargo
+     * https://unsplash.com/photos/uhjiu8FjnsQ
      * https://unsplash.com/photos/RF4p4rTM-2s
      * https://unsplash.com/photos/f7YQo-eYHdM
-     * https://unsplash.com/photos/uXchDIKs4qI
-     * https://unsplash.com/photos/kEEl9csCutg
-     * https://unsplash.com/photos/1vKTnwLMdqs
+     * https://unsplash.com/photos/puHQJZd3MDg
+     * https://unsplash.com/photos/nRAOQdF4IM4
+     * https://unsplash.com/photos/LpLpg1lDjWU
