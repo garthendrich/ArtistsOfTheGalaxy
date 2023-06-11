@@ -6,10 +6,13 @@ export default class Ship extends MovableEntity {
     let span = length * 2;
     const [indices, vertices] = this._generateVertices(span, length);
     const colors = this.generateColors(indices);
+    const textureCoords = this._generateTextureVertices();
 
     this.setColors(colors);
     this.setIndices(indices);
     this.setVertices(vertices);
+    this.setTextureCoords(textureCoords);
+    this.setTexture("SHIP");
   }
 
   _generateVertices(span, length) {
@@ -109,5 +112,29 @@ export default class Ship extends MovableEntity {
       8, // Face 13
     ];
     return [indices, vertices];
+  }
+
+  _generateTextureVertices() {
+    let vertices = [
+      // top
+      0, 1, 1, 1, 1, 0, 0, 0,
+
+      // bottom
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // front
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // left
+      0, 0, 1, 0, 1, 1, 0, 1,
+
+      // Right
+      1, 0, 0, 0, 0, 1, 1, 1,
+
+      // back
+      1, 1, 0, 1, 0, 0, 1, 0,
+    ];
+
+    return vertices;
   }
 }

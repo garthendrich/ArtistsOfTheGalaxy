@@ -59,6 +59,7 @@ function main() {
     PLANET2: "planet-texture-2.png",
     PLANET3: "planet-texture-3.png",
     PLANET4: "planet-texture-4.png",
+    SHIP: "spaceship-texture-5.jpg",
   };
 
   /** ----------------------------------
