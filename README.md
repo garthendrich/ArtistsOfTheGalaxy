@@ -16,12 +16,16 @@ Spacebar - shoot bullets
 1. The ship can shoot bullets using Spacebar.
 2. Once a bullet has hit a planet, the planets color and texture will change.
 3. The ship can collect randomly-spawned collectibles throughout the game.
-   - Color - Changes the bullet into six different colors
-   - Speed - Changes the speed of the ship movement, can make the ship move faster or slower.
-   - Size - Changes the bullet size, can either increase or decrease the bullet size.
 
 # Parameters
+1. User can move the ship through WASD
+2. User can change the color of the planet if they were able to hit a planet with a bullet
+3. User can collect collectibles boxes to change the current behavior and attribute in play (COLOR, SPEED, SIZE)
+      * Color - Changes the bullet into six different colors
+      * Speed - Changes the speed of the ship movement, can make the ship move faster or slower.
+      * Size - Changes the bullet size, can either increase or decrease the bullet size.
 
+Additional: There are 6 backgrounds which is randomized upon the loading of the page.
 # Dependencies
 
 # Setting up for Development
