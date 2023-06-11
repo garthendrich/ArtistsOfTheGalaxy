@@ -1,7 +1,7 @@
-import Entity from "./Entity.js";
 import { getRandomNumber } from "../utils/randomizer.js";
+import MovableEntity from "./MovableEntity.js";
 
-export default class Collectibles extends Entity {
+export default class Collectibles extends MovableEntity {
   constructor(length = 1, origin) {
     super(origin);
 

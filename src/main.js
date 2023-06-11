@@ -119,7 +119,6 @@ function loop() {
       continue;
     }
 
-    bullet.updatePosition();
     // // AFter updating position, check if bullet collided with planet
     for (let index = 0; index < planets.length; index++) {
       // if it has collided,
@@ -140,16 +139,17 @@ function loop() {
       planets.splice(planetIndex, 1);
       continue;
     }
-
-    planet.updatePosition();
   }
 
   //NOTE: ADD HERE COLLISION DESTRUCTION OF COLLECTIBLES
   //set lastCollectibleSpawn equal to currentTime
 
-  ship.updatePosition();
-
   const objects = [ship, ...bullets, ...planets, ...collectibles];
+
+  for (const object of objects) {
+    object.updatePosition();
+  }
+
   renderer.renderObjects(objects);
 
   currentTime = Date.now();
