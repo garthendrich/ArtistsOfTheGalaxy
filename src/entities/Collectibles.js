@@ -11,14 +11,15 @@ export default class Collectibles extends Entity {
     this.selectedBehavior = this._generateBehavior();
     this.attribute = this._generateAttribute();
 
-    const [indices, vertices] = this._generateVertices(length);
+    const [indices, vertices, normals] = this._generateVertices(length);
     // will contain repeated copies of the default color
     const colors = this.generateColors(indices);
     const textureCoords = this._generateTextureVertices();
     const textureName = this._generateTextureName();
 
-    this.setIndices(indices);
     this.setVertices(vertices);
+    this.setIndices(indices);
+    this.setNormals(normals);
     this.setColors(colors);
     this.setTextureCoords(textureCoords);
     this.setTexture(textureName);
@@ -109,8 +110,82 @@ export default class Collectibles extends Entity {
       0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 10, 11, 12, 13, 14, 12,
       14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23,
     ];
+    const normals = [
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1, //front
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1, //back
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0, //top
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0, //bottom
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      0, //right
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0,
+      -1,
+      0,
+      0, //left
+    ];
 
-    return [indices, vertices];
+    return [indices, vertices, normals];
   }
 
   _selectItemFromArray(array, min, max) {
@@ -149,7 +224,7 @@ export default class Collectibles extends Entity {
 
   _generateSize() {
     // bullet sizes
-    const sizes = [2, 3, 4, 5,6];
+    const sizes = [2, 3, 4, 5, 6];
     this.color = [1, 1, 1, 1];
     return this._selectItemFromArray(sizes, 0, sizes.length);
   }

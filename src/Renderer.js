@@ -8,11 +8,12 @@ export default class Renderer {
     this._setupProgram();
     this._initializePointers();
     this._initializeBuffers();
+    this._initializeMatrices();
 
     this.gl.enable(this.gl.DEPTH_TEST);
     this._setupProjection();
     this._initializeCamera();
-    this._setupLightValues();
+    this._initializeLighting();
     this.loadedTextures = null;
     if (textures) {
       this.loadedTextures = this._loadTextures(textures);
@@ -41,15 +42,6 @@ export default class Renderer {
     }
 
     this.gl.useProgram(this.program);
-  }
-
-  _setupLightValues() {
-    // Define light properties
-    this.lightDirection = [1, 1, 1, 0.0]; // Example light direction
-
-    // Set ambient and diffuse light colors and intensities
-    this.ambientLight = [0.8, 0.8, 0.8, 1.0];
-    this.diffuseLight = [1, 1, 1, 1.0];
   }
 
   _loadShader(type, sourceCode) {
@@ -81,15 +73,15 @@ export default class Renderer {
       attributes: {
         position: getAttribLocation("a_position"),
         color: getAttribLocation("a_color"),
+        normals: getAttribLocation("a_normal"),
         textureCoord: getAttribLocation("a_texcoord"),
       },
       uniforms: {
-        lightDirection: getUniformLocation("u_light_direction"),
-        ambientLight: getUniformLocation("u_ambient_light"),
-        diffuseLight: getUniformLocation("u_diffuse_light"),
         model: getUniformLocation("u_model_matrix"),
         view: getUniformLocation("u_view_matrix"),
         projection: getUniformLocation("u_projection_matrix"),
+        normal: getUniformLocation("u_normal_matrix"),
+        lightDirection: getUniformLocation("u_light_direction"),
         textureUnit: getUniformLocation("u_texture"),
       },
     };
@@ -100,15 +92,26 @@ export default class Renderer {
       position: this.gl.createBuffer(),
       indices: this.gl.createBuffer(),
       colors: this.gl.createBuffer(),
+      normals: this.gl.createBuffer(),
       texture: this.gl.createBuffer(),
     };
   }
 
+  _initializeMatrices() {
+    this.matrices = {
+      model: glMatrix.mat4.create(),
+      view: glMatrix.mat4.create(),
+      projection: glMatrix.mat4.create(),
+      normal: glMatrix.mat4.create(),
+      texture: glMatrix.mat4.create(),
+    };
+  }
+
   _setupProjection() {
-    const projectionMatrix = glMatrix.mat4.create();
+    this.matrices.projection = glMatrix.mat4.create();
 
     glMatrix.mat4.perspective(
-      projectionMatrix,
+      this.matrices.projection,
       (45 * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
@@ -118,7 +121,7 @@ export default class Renderer {
     this.gl.uniformMatrix4fv(
       this.pointers.uniforms.projection,
       false,
-      projectionMatrix
+      this.matrices.projection
     );
   }
 
@@ -138,14 +141,27 @@ export default class Renderer {
       this.camera.viewDirection
     );
 
-    const cameraMatrix = glMatrix.mat4.create();
+    this.matrices.camera = glMatrix.mat4.create();
     glMatrix.mat4.lookAt(
-      cameraMatrix,
+      this.matrices.camera,
       this.camera.position,
       cameraCenter,
       this.camera.upDirection
     );
-    this.gl.uniformMatrix4fv(this.pointers.uniforms.view, false, cameraMatrix);
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.view,
+      false,
+      this.matrices.camera
+    );
+  }
+
+  _initializeLighting() {
+    this.lightDirection = [-1.0, -1.0, -2.0];
+
+    this.gl.uniform3fv(
+      this.pointers.uniforms.lightDirection,
+      this.lightDirection
+    );
   }
 
   _renderObject(object) {
@@ -153,11 +169,21 @@ export default class Renderer {
     this._setVertices(object.vertices);
     this._setIndices(object.indices);
     this._setColor(object.colors);
-    this._setLightComponents();
+
+    if (object.normals) {
+      this._setNormals(object.normals);
+    } else {
+      const flatLightingNormals = this._generateFlatLightingNormals(
+        object.vertices.length,
+        this.lightDirection
+      );
+
+      this._setNormals(flatLightingNormals);
+    }
+
     // check the maximum texture units
     // got from https://webglfundamentals.org/webgl/lessons/webgl-texture-units.html
     // const maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-    // console.log(maxTextureUnits);
 
     // if the object has a texture
     if (object.textureName) {
@@ -183,15 +209,55 @@ export default class Renderer {
     );
   }
 
+  _generateFlatLightingNormals(verticesLength, lightDirection) {
+    const normal = glMatrix.vec3.create();
+    glMatrix.vec3.normalize(normal, [
+      -lightDirection[0],
+      -lightDirection[1],
+      -lightDirection[2],
+    ]);
+    console.log(normal);
+    return new Array(verticesLength / 3).fill([
+      normal[0],
+      normal[1],
+      normal[2],
+    ]);
+  }
+
   /**-------------------------
    *  POSITION FUNCTIONS
    * -------------------------
    */
 
   _setPositionOrigin(origin) {
-    const modelMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.translate(modelMatrix, modelMatrix, origin);
-    this.gl.uniformMatrix4fv(this.pointers.uniforms.model, false, modelMatrix);
+    this.matrices.model = glMatrix.mat4.create();
+    glMatrix.mat4.translate(this.matrices.model, this.matrices.model, origin);
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.model,
+      false,
+      this.matrices.model
+    );
+
+    this._updateNormalMatrix();
+  }
+
+  _updateNormalMatrix() {
+    const modelViewMatrix = glMatrix.mat4.create();
+    glMatrix.mat4.multiply(
+      modelViewMatrix,
+      this.matrices.view,
+      this.matrices.model
+    );
+
+    this.matrices.normal = glMatrix.mat4.create();
+    glMatrix.mat4.invert(this.matrices.normal, modelViewMatrix);
+    glMatrix.mat4.transpose(this.matrices.normal, this.matrices.normal);
+
+    this.gl.uniformMatrix4fv(
+      this.pointers.uniforms.normal,
+      false,
+      this.matrices.normal
+    );
   }
 
   _setVertices(vertices) {
@@ -223,6 +289,28 @@ export default class Renderer {
       this.gl.STATIC_DRAW
     );
   }
+
+  _setNormals(normals) {
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.normals);
+
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(normals.flat(Infinity)),
+      this.gl.STATIC_DRAW
+    );
+
+    this.gl.vertexAttribPointer(
+      this.pointers.attributes.normals,
+      3,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
+
+    this.gl.enableVertexAttribArray(this.pointers.attributes.normals);
+  }
+
   /**-------------------------
    *  COLOR FUNCTIONS
    * -------------------------
@@ -331,19 +419,6 @@ export default class Renderer {
     this.gl.enableVertexAttribArray(this.pointers.attributes.textureCoord);
   }
 
-  _setLightComponents() {
-    const lightDirectionMatrix = glMatrix.mat4.create();
-    glMatrix.mat4.fromTranslation(lightDirectionMatrix, this.lightDirection);
-
-    this.gl.uniformMatrix4fv(
-      this.pointers.uniforms.lightDirection,
-      false,
-      this.lightDirection
-    );
-    this.gl.uniform4fv(this.pointers.uniforms.ambientLight, this.ambientLight);
-    this.gl.uniform4fv(this.pointers.uniforms.diffuseLight, this.diffuseLight);
-  }
-
   /** ------------------------
    *  PUBLIC METHODS
    * -------------------------
@@ -358,17 +433,5 @@ export default class Renderer {
   moveCamera(x, y, z) {
     this.camera.position = addArrays(this.camera.position, [x, y, z]);
     this._updateCamera();
-  }
-
-  setLightDirection(direction) {
-    this.lightDirection = direction;
-  }
-
-  setAmbientLight(light) {
-    this.ambientLight = light;
-  }
-
-  setDiffuseLight(light) {
-    this.diffuseLight = light;
   }
 }

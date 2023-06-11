@@ -13,7 +13,6 @@ export function hasCollided(type, object1, object2) {
         (object1.getY() - object2.getY()) * (object1.getY() - object2.getY()) +
         (object1.getZ() - object2.getZ()) * (object1.getZ() - object2.getZ())
     );
-    console.log(distance < object1.getRadius() + object2.getRadius());
     return distance < object1.getRadius() + object2.getRadius();
   } else if (type === "entityToShip") {
     const shipWidth = 10;
@@ -50,8 +49,6 @@ export function hasCollided(type, object1, object2) {
       shipBoundingBox.minZ <= objectBoundingBox.maxZ &&
       shipBoundingBox.maxZ >= objectBoundingBox.minZ
     ) {
-      // Collision detected
-      console.log("Collectible collected!");
       return true;
     }
   }
