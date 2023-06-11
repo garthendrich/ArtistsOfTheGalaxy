@@ -96,12 +96,12 @@ export default class Sphere extends MovableEntity {
 
   _generateTextureVertices() {
     const vertices = [];
-    const totalLongitude = 10;
-    const totalLatitude = 10;
+    const totalLongitude = 25;
+    const totalLatitude = 25;
 
     for (let u = 0; u < totalLatitude; u++) {
       for (let v = 0; v < totalLongitude; v++) {
-        vertices.push(u, v);
+        vertices.push(u / totalLatitude, v / totalLongitude);
       }
     }
 

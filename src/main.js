@@ -33,7 +33,11 @@ function main() {
 
   const collectibles = [];
 
-  let bulletColor = [1,1,1,1];
+  let bulletR = getRandomNumber(1, 10) / 10;
+  let bulletG = getRandomNumber(1, 10) / 10;
+  let bulletB = getRandomNumber(1, 10) / 10;
+
+  let bulletColor = [bulletR, bulletG, bulletB, 1];
   let shipSpeed = 50;
   let bulletSize = 1;
 
@@ -97,17 +101,16 @@ function main() {
 
     if (collectibles.length === 0) {
       spawnCollectible();
-    }else{
-      if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])){
+    } else {
+      if (hasCollided(ENTITY_SHIP_COLLISION, ships[0], collectibles[0])) {
         let behavior = collectibles[0].selectedBehavior;
         let attribute = collectibles[0].attribute;
 
-        if (behavior == "COLOR"){ 
+        if (behavior == "COLOR") {
           bulletColor = attribute;
-          
-        }else if (behavior == "SIZE"){
+        } else if (behavior == "SIZE") {
           bulletSize = 1 * attribute;
-        }else if (behavior == "SPEED"){
+        } else if (behavior == "SPEED") {
           shipSpeed = 50 * attribute;
         }
         console.log(behavior, attribute);
@@ -131,7 +134,9 @@ function main() {
       for (let index = 0; index < planets.length; index++) {
         // if it has collided,
         if (hasCollided(SPHERE_SPHERE_COLLISION, planets[index], bullet)) {
-          console.log("NICE!");
+          if (bulletColor === [1, 1, 1, 1]) {
+            planets[index].setTexture("DEFAULT");
+          }
           planets[index].setColor(bulletColor);
           bullets.splice(bulletIndex, 1);
         }
