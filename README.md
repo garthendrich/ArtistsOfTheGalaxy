@@ -1,6 +1,6 @@
 # Artists of the Galaxy
 
-Artists of the Galaxy is a game type screensaver created using WebGL. This was developed in compliance with the requirement of a final project for CMSC 161 2nd Semster of A.Y. 2022-2023. This project is about a spaceship in space on a mission to travel across the galaxy and paint the planets with its bullets with power-ups you can pick up along the way.
+Artists of the Galaxy is a game type screensaver created using WebGL. This was developed in compliance with the requirement of a final project for CMSC 161 2nd Semester of A.Y. 2022-2023 of the University of the Philippines Los Baños. This project is about a spaceship in space on a mission to travel across the galaxy and paint the planets with its bullets with power-ups you can pick up along the way.
 
 # Live Demo Link
 
