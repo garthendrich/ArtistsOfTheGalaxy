@@ -41,6 +41,11 @@ function main() {
   let shipSpeed = 50;
   let bulletSize = 1;
 
+  let shipBoundPosX = 80;
+  let shipBoundPosY = 60;
+  let shipBoundNegX = -80;
+  let shipBoundNegY = -60;
+
   /** ---------------------------------
    * OBJECTS ends here
    * ----------------------------------
@@ -247,14 +252,16 @@ function main() {
   }
 
   function moveShip(code) {
-    if (code === "KeyW") {
+    if (code === "KeyW" && ships[0].origin[1] < shipBoundPosY) {
       ships[0].moveUp(shipSpeed);
-    } else if (code === "KeyA") {
+    } else if (code === "KeyA" && ships[0].origin[0] > shipBoundNegX) {
       ships[0].moveLeft(shipSpeed);
-    } else if (code === "KeyS") {
+    } else if (code === "KeyS" && ships[0].origin[1] > shipBoundNegY) {
       ships[0].moveDown(shipSpeed);
-    } else if (code === "KeyD") {
+    } else if (code === "KeyD" && ships[0].origin[0] < shipBoundPosX) {
       ships[0].moveRight(shipSpeed);
+    } else {
+      willMove = false;
     }
   }
 
