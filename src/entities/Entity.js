@@ -13,13 +13,17 @@ export default class Entity {
     this.vertices = vertices;
   }
 
-  setColor(color){
+  setColor(color) {
     this.color = color;
     this.setColors(this.generateColors(this.getIndices()));
   }
 
   setColors(colors) {
     this.colors = colors;
+  }
+
+  setNormals(normals) {
+    this.normals = normals;
   }
 
   setTextureCoords(textureCoords) {
@@ -42,7 +46,7 @@ export default class Entity {
     return this.origin[2];
   }
 
-  getIndices(){
+  getIndices() {
     return this.indices;
   }
 
