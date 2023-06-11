@@ -1,13 +1,29 @@
 import MovableEntity from "./MovableEntity.js";
+import { getRandomNumber } from "../utils/randomizer.js";
 
 export default class Sphere extends MovableEntity {
-  constructor(radius = 1, origin) {
+  constructor(radius = 1, origin, isPlanet = false) {
     super(origin);
+    const [indices, vertices, normals, textureCoords] =
+      this._generateVertices(radius);
+    const colors = this.generateColors(indices);
 
-    const [indices, vertices] = this._generateVertices(radius);
-
+    this.setColors(colors);
     this.setIndices(indices);
+    this.setTextureCoords(textureCoords);
     this.setVertices(vertices);
+    this.setNormals(normals);
+    if (isPlanet === true) {
+      this.setTexture("PLANET" + Math.floor(getRandomNumber(1, 4)));
+    }
+
+    // set an attribute: radius
+    this.radius = radius;
+  }
+
+  // method for getting the radius of the sphere object
+  getRadius() {
+    return this.radius;
   }
 
   _generateVertices(radius) {
@@ -30,6 +46,8 @@ export default class Sphere extends MovableEntity {
 
     const indices = [];
     const vertices = [];
+    const normals = [];
+    const textureCoords = [];
 
     // generate vertices
 
@@ -37,6 +55,14 @@ export default class Sphere extends MovableEntity {
       const verticesRow = [];
 
       const v = iy / heightSegments;
+
+      let uOffset = 0;
+
+      if (iy === 0) {
+        uOffset = 0.5 / widthSegments;
+      } else if (iy === heightSegments) {
+        uOffset = -0.5 / widthSegments;
+      }
 
       for (let ix = 0; ix <= widthSegments; ix++) {
         const u = ix / widthSegments;
@@ -54,6 +80,12 @@ export default class Sphere extends MovableEntity {
           Math.sin(thetaStart + v * thetaLength);
 
         vertices.push(x, y, z);
+
+        const normal = glMatrix.vec3.create();
+        glMatrix.vec3.normalize(normal, [x, y, z]);
+        normals.push(...normal);
+
+        textureCoords.push(u + uOffset, 1 - v);
 
         verticesRow.push(index);
         index++;
@@ -76,6 +108,6 @@ export default class Sphere extends MovableEntity {
       }
     }
 
-    return [indices, vertices];
+    return [indices, vertices, normals, textureCoords];
   }
 }
