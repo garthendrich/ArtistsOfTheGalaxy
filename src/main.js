@@ -18,14 +18,12 @@ import {
   ENTITY_SHIP_COLLISION,
   FIELD_OF_VIEW_DEGREES,
 } from "./config.js";
+import { getBackground } from "./utils/randomizeBackground.js";
 
+// GLOBAL SCENE ATTRIBUTES
 let shipHorizontalBound;
 let shipVerticalBound;
 
-/** ---------------------------------
- * OBJECTS starts here
- * ----------------------------------
- */
 const ship = new Ship(0, [0, -20, -SHIP_Z_DISTANCE_FROM_CAMERA]);
 const planets = [];
 const bullets = [];
@@ -44,11 +42,6 @@ let bulletColor = selectItemFromArray(colors, 0, colors.length);
 let shipSpeed = 50;
 let bulletSize = 2;
 
-/** ---------------------------------
- * OBJECTS ends here
- * ----------------------------------
- */
-
 /** ----------------------------------
  *  Textures
  *  ----------------------------------
@@ -65,15 +58,13 @@ const textures = {
   SHIP: "spaceship-texture-5.jpg",
 };
 
-/** ----------------------------------
- *  Renderer proper
- *  ----------------------------------
- */
-
+// Canvas init
 const canvas = document.querySelector("#screen");
 const renderer = new Renderer(canvas, textures);
 
 document.addEventListener("DOMContentLoaded", () => {
+  const backgroundImg = document.getElementById("backgroundImg");
+  backgroundImg.src = getBackground();
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 });
@@ -91,6 +82,7 @@ function resizeCanvas() {
     shipVerticalBound * (window.innerWidth / window.innerHeight);
 }
 
+// GLOBAL ANIMATION ATTRIBUTES
 let currentTime = Date.now();
 let lastFrameTime = 0;
 let fpsCounter = 0;
@@ -100,6 +92,7 @@ let lastBulletFireTime = 0;
 let lastPlanetSpawn = 0;
 let lastCollectibleSpawn = 0;
 
+// Animation Proper
 window.requestAnimationFrame(loop);
 
 function loop() {

@@ -5,8 +5,6 @@ export default class Collectibles extends MovableEntity {
   constructor(length = 1, origin) {
     super(origin);
 
-    // Default black Color;
-    this.color = [1, 0, 0, 1];
     // behaviors
     this.selectedBehavior = this._generateBehavior();
     this.attribute = this._generateAttribute();

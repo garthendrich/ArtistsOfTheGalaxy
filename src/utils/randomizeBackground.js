@@ -5,8 +5,3 @@ export function getBackground() {
   console.log("../assets/bg-galaxy-" + number + ".jpg");
   return "src/assets/bg-galaxy-" + number + ".jpg";
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const backgroundImg = document.getElementById("backgroundImg");
-  backgroundImg.src = getBackground();
-});
