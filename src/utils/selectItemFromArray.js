@@ -1,6 +1,6 @@
 import { getRandomNumber } from "./randomizer.js";
 
-export function selectItemFromArray(array, min, max) {
-  let index = Math.floor(getRandomNumber(min, max));
+export function selectItemFromArray(array) {
+  const index = Math.floor(getRandomNumber(0, array.length));
   return array[index];
 }

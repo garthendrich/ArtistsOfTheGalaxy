@@ -1,5 +1,7 @@
-import MovableEntity from "./MovableEntity.js";
 import { selectItemFromArray } from "../utils/selectItemFromArray.js";
+
+import { BULLET_COLORS } from "../config.js";
+import MovableEntity from "./MovableEntity.js";
 
 export default class Collectibles extends MovableEntity {
   constructor(length = 1, origin) {
@@ -188,44 +190,29 @@ export default class Collectibles extends MovableEntity {
 
   _generateBehavior() {
     const behaviors = ["SPEED", "COLOR", "SIZE"];
-
-    return selectItemFromArray(behaviors, 0, 3);
+    return selectItemFromArray(behaviors);
   }
 
   _generateColor() {
-    const colors = [
-      [0.0, 0.0, 1.0, 1], // BLUE
-      [0.0, 1.0, 0.0, 1], // GREEN
-      [1.0, 0.0, 0.0, 1], // RED
-      [0.0, 1.0, 1.0, 1],
-      [1.0, 1.0, 0.0, 1],
-      [1.0, 0.0, 1.0, 1],
-    ];
-
-    this.color = selectItemFromArray(colors, 0, colors.length);
-
+    this.color = selectItemFromArray(BULLET_COLORS);
     return this.color;
   }
 
-  _generateSpeed() {
-    // bullet speed
+  _generateShipSpeed() {
     const speeds = [1, 2, 3, 4, 5];
-    this.color = [1, 1, 1, 1];
-
-    return selectItemFromArray(speeds, 0, 3, speeds.length);
+    return selectItemFromArray(speeds);
   }
 
   _generateSize() {
     // bullet sizes
     const sizes = [2, 3, 4, 5, 6];
-    this.color = [1, 1, 1, 1];
-    return selectItemFromArray(sizes, 0, sizes.length);
+    return selectItemFromArray(sizes);
   }
 
   _generateAttribute() {
     switch (this.selectedBehavior) {
       case "SPEED":
-        return this._generateSpeed();
+        return this._generateShipSpeed();
       case "COLOR":
         return this._generateColor();
       case "SIZE":

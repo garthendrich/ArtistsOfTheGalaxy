@@ -19,6 +19,7 @@ import {
   COLLECTIBLE_INTERVAL_TIME,
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
+  BULLET_COLORS,
 } from "./config.js";
 import { getBackground } from "./utils/randomizeBackground.js";
 
@@ -28,16 +29,7 @@ const planets = [];
 const bullets = [];
 const collectibles = [];
 
-const colors = [
-  [0.0, 0.0, 1.0, 1], // BLUE
-  [0.0, 1.0, 0.0, 1], // GREEN
-  [1.0, 0.0, 0.0, 1], // RED
-  [0.0, 1.0, 1.0, 1],
-  [1.0, 1.0, 0.0, 1],
-  [1.0, 0.0, 1.0, 1],
-];
-
-let bulletColor = selectItemFromArray(colors, 0, colors.length);
+let bulletColor = selectItemFromArray(BULLET_COLORS);
 let shipSpeed = 50;
 let bulletSize = 2;
 
@@ -202,7 +194,7 @@ function spawnCollectible() {
 
 function despawnFarOffBullets() {
   for (const [bulletIndex, bullet] of bullets.entries()) {
-    if (bullet.getZ() < -FAR_BOUND) {
+    if (bullet.getZ() < -FAR_BOUND - bullet.radius) {
       bullets.splice(bulletIndex, 1);
     }
   }
