@@ -216,7 +216,6 @@ export default class Renderer {
       -lightDirection[1],
       -lightDirection[2],
     ]);
-    console.log(normal);
     return new Array(verticesLength / 3).fill([
       normal[0],
       normal[1],
