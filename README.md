@@ -2,15 +2,9 @@
 
 Artists of the Galaxy is a game type of screensaver created using WebGL. This is treated as a final project for CMSC 161 A.Y. 2022 - 2023. This project is about a spaceship in space on a quest to travel through the galaxy and paint the planets with its bullets
 
-# How to Run
+# Live Demo
 
-1. Open the folder through Visual Studio Code.
-2. Download the live server extension in VS Code.
-3. Run the live server through VS Code.
-
----
-
-1. Run the application through the live demo below.
+Here is the link for the live demo: https://artistsofthegalaxy.netlify.app/
 
 ## Interactions
 
@@ -30,9 +24,11 @@ Spacebar - shoot bullets
 
 # Dependencies
 
-# Live Demo
+# Setting up for Development
 
-Here is the link for the live demo: https://artistsofthegalaxy.netlify.app/
+1. Run `npm install`
+2. Download the Live Server extension in VS Code.
+3. Run the Live Server.
 
 # Members
 
