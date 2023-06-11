@@ -4,6 +4,9 @@ import Sphere from "./entities/Sphere.js";
 import { hasCollided } from "./events/objectCollision.js";
 import addArrays from "./utils/addArrays.js";
 import { getRandomNumber } from "./utils/randomizer.js";
+import { playerInputs } from "./playerInputs.js";
+import Renderer from "./Renderer.js";
+import { selectItemFromArray } from "./utils/selectItemFromArray.js";
 
 import {
   FAR_BOUND,
@@ -13,8 +16,6 @@ import {
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
 } from "./config.js";
-import { playerInputs } from "./playerInputs.js";
-import Renderer from "./Renderer.js";
 
 /** ---------------------------------
  * OBJECTS starts here
@@ -25,11 +26,16 @@ const planets = [];
 const bullets = [];
 const collectibles = [];
 
-let bulletR = getRandomNumber(1, 10) / 10;
-let bulletG = getRandomNumber(1, 10) / 10;
-let bulletB = getRandomNumber(1, 10) / 10;
+const colors = [
+  [0.0, 0.0, 1.0, 1], // BLUE
+  [0.0, 1.0, 0.0, 1], // GREEN
+  [1.0, 0.0, 0.0, 1], // RED
+  [0.0, 1.0, 1.0, 1],
+  [1.0, 1.0, 0.0, 1],
+  [1.0, 0.0, 1.0, 1],
+];
 
-let bulletColor = [bulletR, bulletG, bulletB, 1];
+let bulletColor = selectItemFromArray(colors, 0, colors.length);
 let shipSpeed = 50;
 let bulletSize = 2;
 
@@ -143,8 +149,8 @@ function spawnBullet() {
 
 function spawnPlanet() {
   if (currentTime - lastPlanetSpawn < PLANET_INTERVAL_TIME) return;
-  const planetX = getRandomNumber(-15, 15) * 10;
-  const planetY = getRandomNumber(-15, 15) * 10;
+  const planetX = getRandomNumber(-10, 10) * 8;
+  const planetY = getRandomNumber(-10, 10) * 6;
   const planetSpawnPosition = addArrays(renderer.camera.position, [
     planetX,
     planetY,

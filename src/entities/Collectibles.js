@@ -1,5 +1,5 @@
-import { getRandomNumber } from "../utils/randomizer.js";
 import MovableEntity from "./MovableEntity.js";
+import { selectItemFromArray } from "../utils/selectItemFromArray.js";
 
 export default class Collectibles extends MovableEntity {
   constructor(length = 1, origin) {
@@ -188,15 +188,10 @@ export default class Collectibles extends MovableEntity {
     return [indices, vertices, normals];
   }
 
-  _selectItemFromArray(array, min, max) {
-    let index = Math.floor(getRandomNumber(min, max));
-    return array[index];
-  }
-
   _generateBehavior() {
     const behaviors = ["SPEED", "COLOR", "SIZE"];
 
-    return this._selectItemFromArray(behaviors, 0, 3);
+    return selectItemFromArray(behaviors, 0, 3);
   }
 
   _generateColor() {
@@ -209,7 +204,7 @@ export default class Collectibles extends MovableEntity {
       [1.0, 0.0, 1.0, 1],
     ];
 
-    this.color = this._selectItemFromArray(colors, 0, colors.length);
+    this.color = selectItemFromArray(colors, 0, colors.length);
 
     return this.color;
   }
@@ -219,14 +214,14 @@ export default class Collectibles extends MovableEntity {
     const speeds = [1, 2, 3, 4, 5];
     this.color = [1, 1, 1, 1];
 
-    return this._selectItemFromArray(speeds, 0, 3, speeds.length);
+    return selectItemFromArray(speeds, 0, 3, speeds.length);
   }
 
   _generateSize() {
     // bullet sizes
     const sizes = [2, 3, 4, 5, 6];
     this.color = [1, 1, 1, 1];
-    return this._selectItemFromArray(sizes, 0, sizes.length);
+    return selectItemFromArray(sizes, 0, sizes.length);
   }
 
   _generateAttribute() {
