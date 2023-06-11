@@ -51,7 +51,10 @@ function main() {
     SIZE: "size-texture.png",
     SPEED: "speed-texture.png",
     COLOR: "color-texture.png",
-    PLANET: "planet-texture.png",
+    PLANET1: "planet-texture.png",
+    PLANET2: "planet-texture-2.png",
+    PLANET3: "planet-texture-3.png",
+    PLANET4: "planet-texture-4.png",
   };
 
   /** ----------------------------------

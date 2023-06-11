@@ -1,4 +1,5 @@
 import MovableEntity from "./MovableEntity.js";
+import { getRandomNumber } from "../utils/randomizer.js";
 
 export default class Sphere extends MovableEntity {
   constructor(radius = 1, origin, isPlanet = false) {
@@ -13,7 +14,7 @@ export default class Sphere extends MovableEntity {
     if (isPlanet === true){
       const textureCoords = this._generateTextureVertices();
       this.setTextureCoords(textureCoords);
-      this.setTexture("PLANET");
+      this.setTexture("PLANET" + Math.floor(getRandomNumber(1, 4)));
     }
     
 
