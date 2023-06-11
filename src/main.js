@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", resizeCanvas);
 });
 
+//change size of canvas based on the width and height of the window's layout viewport
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -116,6 +117,7 @@ function loop() {
   window.requestAnimationFrame(loop);
 }
 
+// Moves the ship within the bounds set
 function moveShip() {
   const left = playerInputs.includes("KeyA");
   const right = playerInputs.includes("KeyD");
@@ -139,6 +141,7 @@ function moveShip() {
   }
 }
 
+// Spawns bullets with frequency controlled by intervals
 function spawnBullet() {
   if (!playerInputs.includes("Space")) return;
   if (currentTime - lastBulletFireTime < BULLET_INTERVAL_TIME) return;
@@ -151,6 +154,8 @@ function spawnBullet() {
   lastBulletFireTime = currentTime;
 }
 
+// Spawns planets with random sizes and positions within bounds set
+// Frequency of spawn controlled by interval value
 function spawnPlanet() {
   if (currentTime - lastPlanetSpawn < PLANET_INTERVAL_TIME) return;
 
@@ -169,6 +174,8 @@ function spawnPlanet() {
   lastPlanetSpawn = currentTime;
 }
 
+// Spawns collectibles with random positions within bounds set
+// Frequency of spawn controlled by interval value
 function spawnCollectible() {
   if (collectibles.length > 0) return;
   if (currentTime - lastCollectibleSpawn < COLLECTIBLE_INTERVAL_TIME) return;
@@ -208,6 +215,7 @@ function despawnPassedPlanets() {
   }
 }
 
+// Behaviors of objects (Ship, Bullets, Collectibles, Planets) when collision among them is detected
 function manageEntityCollisions() {
   for (const [bulletIndex, bullet] of bullets.entries()) {
     for (const planet of planets) {

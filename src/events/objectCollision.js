@@ -14,6 +14,8 @@ export function hasCollided(type, object1, object2) {
         (object1.getZ() - object2.getZ()) * (object1.getZ() - object2.getZ())
     );
     return distance < object1.getRadius() + object2.getRadius();
+
+    // ship to collectible collision
   } else if (type === "entityToShip") {
     const shipWidth = 10;
     const shipHeight = 10;
