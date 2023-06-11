@@ -13,7 +13,7 @@ export default class Renderer {
     this._initializeMatrices();
 
     this.gl.enable(this.gl.DEPTH_TEST);
-    this._setupProjection();
+    this._updateProjection();
     this._initializeCamera();
     this._initializeLighting();
     this.loadedTextures = null;
@@ -109,7 +109,7 @@ export default class Renderer {
     };
   }
 
-  _setupProjection() {
+  _updateProjection() {
     this.matrices.projection = glMatrix.mat4.create();
 
     glMatrix.mat4.perspective(
@@ -431,8 +431,8 @@ export default class Renderer {
     for (const entity of entities) this._renderObject(entity);
   }
 
-  moveCamera(x, y, z) {
-    this.camera.position = addArrays(this.camera.position, [x, y, z]);
-    this._updateCamera();
+  resize(width, height) {
+    this.gl.viewport(0, 0, width, height);
+    this._updateProjection();
   }
 }

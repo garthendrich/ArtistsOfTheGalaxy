@@ -67,7 +67,16 @@ const textures = {
 const canvas = document.querySelector("#screen");
 const renderer = new Renderer(canvas, textures);
 
-// Animation
+document.addEventListener("DOMContentLoaded", () => {
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+});
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  renderer.resize(window.innerWidth, window.innerHeight);
+}
 
 let currentTime = Date.now();
 let lastFrameTime = 0;
