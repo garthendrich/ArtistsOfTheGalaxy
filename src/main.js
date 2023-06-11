@@ -32,7 +32,7 @@ let bulletB = getRandomNumber(1, 10) / 10;
 
 let bulletColor = [bulletR, bulletG, bulletB, 1];
 let shipSpeed = 50;
-let bulletSize = 1;
+let bulletSize = 2;
 
 let shipBoundPosX = 80;
 let shipBoundPosY = 60;
@@ -75,7 +75,6 @@ let lastFrameTime = 0;
 let fpsCounter = 0;
 
 let lastBulletFireTime = 0;
-let willFireBullet = false;
 
 let lastPlanetSpawn = 0;
 let lastCollectibleSpawn = 0;
@@ -83,7 +82,6 @@ let lastCollectibleSpawn = 0;
 window.requestAnimationFrame(loop);
 
 function loop() {
-  // console.log(playerInputs);
   fpsCounter++;
   if (currentTime - lastFrameTime > 1000) {
     console.log("FPS: " + fpsCounter);
@@ -92,11 +90,7 @@ function loop() {
   }
 
   moveShip();
-
-  if (willFireBullet) {
-    spawnBullet();
-  }
-
+  spawnBullet();
   spawnPlanet();
 
   if (collectibles.length === 0) {
@@ -162,22 +156,18 @@ function loop() {
   window.requestAnimationFrame(loop);
 }
 
-//spawns bullets
 function spawnBullet() {
+  if (!playerInputs.includes("Space")) return;
   if (currentTime - lastBulletFireTime < BULLET_INTERVAL_TIME) return;
-  const bulletSpawnPosition = addArrays(renderer.camera.position, [
-    ship.getX(),
-    ship.getY(),
-    ship.getZ(),
-  ]);
-  const bullet = new Sphere(bulletSize, bulletSpawnPosition, [0, 1, 4]);
-  bullet.moveBack(512);
-  bullets.push(bullet);
+
+  const bullet = new Sphere(bulletSize, ship.origin);
   bullet.setColor(bulletColor);
+  bullet.moveBack(2048);
+  bullets.push(bullet);
+
   lastBulletFireTime = currentTime;
 }
 
-// spawns planets
 function spawnPlanet() {
   if (currentTime - lastPlanetSpawn < PLANET_INTERVAL_TIME) return;
   const planetX = getRandomNumber(-15, 15) * 10;
