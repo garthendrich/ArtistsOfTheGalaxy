@@ -203,7 +203,7 @@ function despawnFarOffBullets() {
 
 function despawnPassedPlanets() {
   for (const [planetIndex, planet] of planets.entries()) {
-    if (planet[2] > 100) {
+    if (planet.getZ() > BIGGEST_PLANET_RADIUS) {
       planets.splice(planetIndex, 1);
     }
   }
