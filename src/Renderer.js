@@ -1,6 +1,8 @@
-import addArrays from "./utils/addArrays.js";
 import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
+import addArrays from "./utils/addArrays.js";
+
+import { FAR_BOUND } from "./config.js";
 
 export default class Renderer {
   constructor(canvas, textures = null) {
@@ -115,7 +117,7 @@ export default class Renderer {
       (45 * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
-      1000
+      FAR_BOUND
     );
 
     this.gl.uniformMatrix4fv(
@@ -422,11 +424,11 @@ export default class Renderer {
    *  PUBLIC METHODS
    * -------------------------
    */
-  renderObjects(objects) {
+  renderEntities(entities) {
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-    for (const object of objects) this._renderObject(object);
+    for (const entity of entities) this._renderObject(entity);
   }
 
   moveCamera(x, y, z) {
