@@ -5,25 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Ravagers of the Galaxy</title>
+    <title>Artists of the Galaxy</title>
 
     <link rel="stylesheet" href="/main.css" />
 
     <script src="/gl-matrix.js"></script>
   </head>
   <body>
-    <img
-      id="backgroundImg"
-      width="640"
-      height="480"
-      style="position: absolute"
-    />
-    <canvas
-      id="screen"
-      height="1000"
-      width="1000"
-      style="position: relative"
-    ></canvas>
+    <div id="root">
+      <img id="backgroundImg" />
+      <canvas id="screen"></canvas>
+    </div>
 
     <script src="src/utils/randomizeBackground.js" type="module"></script>
     <script src="/src/main.js" type="module"></script>

@@ -6,21 +6,26 @@ import addArrays from "./utils/addArrays.js";
 import { getRandomNumber } from "./utils/randomizer.js";
 
 import {
+  SHIP_Z_DISTANCE_FROM_CAMERA,
   FAR_BOUND,
   BULLET_INTERVAL_TIME,
   PLANET_INTERVAL_TIME,
   COLLECTIBLE_INTERVAL_TIME,
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
+  FIELD_OF_VIEW_DEGREES,
 } from "./config.js";
 import { playerInputs } from "./playerInputs.js";
 import Renderer from "./Renderer.js";
+
+let shipHorizontalBound;
+let shipVerticalBound;
 
 /** ---------------------------------
  * OBJECTS starts here
  * ----------------------------------
  */
-const ship = new Ship(10, [0, -20, -150]);
+const ship = new Ship(0, [0, -20, -SHIP_Z_DISTANCE_FROM_CAMERA]);
 const planets = [];
 const bullets = [];
 const collectibles = [];
@@ -32,11 +37,6 @@ let bulletB = getRandomNumber(1, 10) / 10;
 let bulletColor = [bulletR, bulletG, bulletB, 1];
 let shipSpeed = 50;
 let bulletSize = 2;
-
-let shipBoundPosX = 80;
-let shipBoundPosY = 60;
-let shipBoundNegX = -80;
-let shipBoundNegY = -60;
 
 /** ---------------------------------
  * OBJECTS ends here
@@ -67,7 +67,23 @@ const textures = {
 const canvas = document.querySelector("#screen");
 const renderer = new Renderer(canvas, textures);
 
-// Animation
+document.addEventListener("DOMContentLoaded", () => {
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+});
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  renderer.resize(window.innerWidth, window.innerHeight);
+
+  const fieldOfViewRadians = (FIELD_OF_VIEW_DEGREES * Math.PI) / 180;
+  shipVerticalBound =
+    Math.tan(fieldOfViewRadians / 2) * SHIP_Z_DISTANCE_FROM_CAMERA;
+  shipHorizontalBound =
+    shipVerticalBound * (window.innerWidth / window.innerHeight);
+}
 
 let currentTime = Date.now();
 let lastFrameTime = 0;
@@ -112,17 +128,17 @@ function moveShip() {
   const up = playerInputs.includes("KeyW");
   const down = playerInputs.includes("KeyS");
 
-  if (left && !right && ship.origin[0] > shipBoundNegX) {
+  if (left && !right && ship.origin[0] > -shipHorizontalBound) {
     ship.moveLeft(shipSpeed);
-  } else if (right && !left && ship.origin[0] < shipBoundPosX) {
+  } else if (right && !left && ship.origin[0] < shipHorizontalBound) {
     ship.moveRight(shipSpeed);
   } else {
     ship.stopXMovement();
   }
 
-  if (up && !down && ship.origin[1] < shipBoundPosY) {
+  if (up && !down && ship.origin[1] < shipVerticalBound) {
     ship.moveUp(shipSpeed);
-  } else if (down && !up && ship.origin[1] > shipBoundNegY) {
+  } else if (down && !up && ship.origin[1] > -shipVerticalBound) {
     ship.moveDown(shipSpeed);
   } else {
     ship.stopYMovement();
@@ -165,7 +181,11 @@ function spawnCollectible() {
   const collectibleX = getRandomNumber(-6, 6) * 10;
   const collectibleY = getRandomNumber(-6, 6) * 10;
 
-  const collectible = new Collectibles(8, [collectibleX, collectibleY, -150]);
+  const collectible = new Collectibles(8, [
+    collectibleX,
+    collectibleY,
+    -SHIP_Z_DISTANCE_FROM_CAMERA,
+  ]);
   collectibles.push(collectible);
 
   lastCollectibleSpawn = currentTime;

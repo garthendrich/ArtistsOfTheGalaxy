@@ -2,7 +2,7 @@ import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 import addArrays from "./utils/addArrays.js";
 
-import { FAR_BOUND } from "./config.js";
+import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "./config.js";
 
 export default class Renderer {
   constructor(canvas, textures = null) {
@@ -13,7 +13,7 @@ export default class Renderer {
     this._initializeMatrices();
 
     this.gl.enable(this.gl.DEPTH_TEST);
-    this._setupProjection();
+    this._updateProjection();
     this._initializeCamera();
     this._initializeLighting();
     this.loadedTextures = null;
@@ -109,12 +109,12 @@ export default class Renderer {
     };
   }
 
-  _setupProjection() {
+  _updateProjection() {
     this.matrices.projection = glMatrix.mat4.create();
 
     glMatrix.mat4.perspective(
       this.matrices.projection,
-      (45 * Math.PI) / 180,
+      (FIELD_OF_VIEW_DEGREES * Math.PI) / 180,
       this.gl.canvas.clientWidth / this.gl.canvas.clientHeight,
       0.1,
       FAR_BOUND
@@ -431,8 +431,8 @@ export default class Renderer {
     for (const entity of entities) this._renderObject(entity);
   }
 
-  moveCamera(x, y, z) {
-    this.camera.position = addArrays(this.camera.position, [x, y, z]);
-    this._updateCamera();
+  resize(width, height) {
+    this.gl.viewport(0, 0, width, height);
+    this._updateProjection();
   }
 }
