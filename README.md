@@ -23,5 +23,5 @@ Here is the link for the live demo: https://artistsofthegalaxy.netlify.app/
 # Members
 - Francis Bejosano (febejosano@up.edu.ph)
 - Jonahlee Xyrkcysz Fabula (jafabula@up.edu.ph)
-- Garth Hendrich Lapitan
+- Garth Hendrich Lapitan (gclapitan@up.edu.ph)
 - Jan Coleen Estilo (jsestilo@up.edu.ph)
