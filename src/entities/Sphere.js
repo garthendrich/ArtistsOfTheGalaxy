@@ -5,15 +5,14 @@ export default class Sphere extends MovableEntity {
   constructor(radius = 1, origin, isPlanet = false) {
     super(origin);
     console.log(isPlanet);
-    const [indices, vertices] = this._generateVertices(radius);
+    const [indices, vertices, textureCoords] = this._generateVertices(radius);
     const colors = this.generateColors(indices);
 
     this.setColors(colors);
     this.setIndices(indices);
+    this.setTextureCoords(textureCoords);
     this.setVertices(vertices);
     if (isPlanet === true) {
-      const textureCoords = this._generateTextureVertices();
-      this.setTextureCoords(textureCoords);
       this.setTexture("PLANET" + Math.floor(getRandomNumber(1, 4)));
     }
 
@@ -46,6 +45,7 @@ export default class Sphere extends MovableEntity {
 
     const indices = [];
     const vertices = [];
+    const textureCoords = [];
 
     // generate vertices
 
@@ -53,6 +53,14 @@ export default class Sphere extends MovableEntity {
       const verticesRow = [];
 
       const v = iy / heightSegments;
+
+      let uOffset = 0;
+
+      if (iy === 0) {
+        uOffset = 0.5 / widthSegments;
+      } else if (iy === heightSegments) {
+        uOffset = -0.5 / widthSegments;
+      }
 
       for (let ix = 0; ix <= widthSegments; ix++) {
         const u = ix / widthSegments;
@@ -70,6 +78,7 @@ export default class Sphere extends MovableEntity {
           Math.sin(thetaStart + v * thetaLength);
 
         vertices.push(x, y, z);
+        textureCoords.push(u + uOffset, 1 - v);
 
         verticesRow.push(index);
         index++;
@@ -91,20 +100,7 @@ export default class Sphere extends MovableEntity {
         if (iy !== heightSegments - 1) indices.push(b, c, d);
       }
     }
-    return [indices, vertices];
-  }
 
-  _generateTextureVertices() {
-    const vertices = [];
-    const totalLongitude = 10;
-    const totalLatitude = 10;
-
-    for (let u = 0; u < totalLatitude; u++) {
-      for (let v = 0; v < totalLongitude; v++) {
-        vertices.push(u, v);
-      }
-    }
-
-    return vertices;
+    return [indices, vertices, textureCoords];
   }
 }
