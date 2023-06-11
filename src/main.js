@@ -8,16 +8,17 @@ import Renderer from "./Renderer.js";
 import { selectItemFromArray } from "./utils/selectItemFromArray.js";
 
 import {
+  SMALLEST_PLANET_RADIUS,
   BIGGEST_PLANET_RADIUS,
+  COLLECTIBLE_SIZE,
   SHIP_Z_DISTANCE_FROM_CAMERA,
   FAR_BOUND,
+  FIELD_OF_VIEW_DEGREES,
   BULLET_INTERVAL_TIME,
   PLANET_INTERVAL_TIME,
   COLLECTIBLE_INTERVAL_TIME,
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
-  FIELD_OF_VIEW_DEGREES,
-  SMALLEST_PLANET_RADIUS,
 } from "./config.js";
 import { getBackground } from "./utils/randomizeBackground.js";
 
@@ -74,9 +75,11 @@ let shipHorizontalBound;
 let shipVerticalBound;
 
 document.addEventListener("DOMContentLoaded", () => {
+  window.requestAnimationFrame(loop);
+
   const backgroundImg = document.getElementById("backgroundImg");
   backgroundImg.src = getBackground();
-  window.requestAnimationFrame(loop);
+
   resizeCanvas();
 
   window.addEventListener("resize", resizeCanvas);
@@ -127,17 +130,17 @@ function moveShip() {
   const up = playerInputs.includes("KeyW");
   const down = playerInputs.includes("KeyS");
 
-  if (left && !right && ship.origin[0] > -shipHorizontalBound) {
+  if (left && !right && ship.getX() > -shipHorizontalBound) {
     ship.moveLeft(shipSpeed);
-  } else if (right && !left && ship.origin[0] < shipHorizontalBound) {
+  } else if (right && !left && ship.getX() < shipHorizontalBound) {
     ship.moveRight(shipSpeed);
   } else {
     ship.stopXMovement();
   }
 
-  if (up && !down && ship.origin[1] < shipVerticalBound) {
+  if (up && !down && ship.getY() < shipVerticalBound) {
     ship.moveUp(shipSpeed);
-  } else if (down && !up && ship.origin[1] > -shipVerticalBound) {
+  } else if (down && !up && ship.getY() > -shipVerticalBound) {
     ship.moveDown(shipSpeed);
   } else {
     ship.stopYMovement();
@@ -178,14 +181,20 @@ function spawnCollectible() {
   if (collectibles.length > 0) return;
   if (currentTime - lastCollectibleSpawn < COLLECTIBLE_INTERVAL_TIME) return;
 
-  const collectibleX = getRandomNumber(-6, 6) * 10;
-  const collectibleY = getRandomNumber(-6, 6) * 10;
-
-  const collectible = new Collectibles(8, [
+  const collectibleX =
+    getRandomNumber(-1, 1) * (shipHorizontalBound - COLLECTIBLE_SIZE);
+  const collectibleY =
+    getRandomNumber(-1, 1) * (shipVerticalBound - COLLECTIBLE_SIZE);
+  const collectibleSpawnPosition = [
     collectibleX,
     collectibleY,
     -SHIP_Z_DISTANCE_FROM_CAMERA,
-  ]);
+  ];
+
+  const collectible = new Collectibles(
+    COLLECTIBLE_SIZE,
+    collectibleSpawnPosition
+  );
   collectibles.push(collectible);
 
   lastCollectibleSpawn = currentTime;
