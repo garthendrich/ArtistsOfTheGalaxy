@@ -220,7 +220,7 @@ function manageEntityCollisions() {
   for (const [bulletIndex, bullet] of bullets.entries()) {
     for (const planet of planets) {
       if (hasCollided(SPHERE_SPHERE_COLLISION, planet, bullet)) {
-        planet.setColor(bulletColor);
+        planet.setColor(bullet.color);
         bullets.splice(bulletIndex, 1);
       }
     }
