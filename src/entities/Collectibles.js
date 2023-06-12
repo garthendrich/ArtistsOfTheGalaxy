@@ -1,7 +1,7 @@
-import { selectItemFromArray } from "../utils/selectItemFromArray.js";
+import MovableEntity from "/src/entities/MovableEntity";
+import { selectItemFromArray } from "/src/utils/selectItemFromArray";
 
-import { BULLET_COLORS } from "../config.js";
-import MovableEntity from "./MovableEntity.js";
+import { BULLET_COLORS } from "/src/config";
 
 export default class Collectibles extends MovableEntity {
   constructor(length = 1, origin) {

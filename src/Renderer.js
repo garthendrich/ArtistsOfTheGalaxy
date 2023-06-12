@@ -1,8 +1,10 @@
-import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
-import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
-import addArrays from "./utils/addArrays.js";
+import * as glMatrix from "gl-matrix";
 
-import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "./config.js";
+import vertexShaderSourceCode from "/src/shaders/vertexShader.glsl";
+import fragmentShaderSourceCode from "/src/shaders/fragmentShader.glsl";
+import addArrays from "/src/utils/addArrays";
+
+import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "/src/config";
 
 export default class Renderer {
   constructor(canvas, textures = null) {
@@ -365,7 +367,7 @@ export default class Renderer {
 
     // Load the texture image
     const image = new Image();
-    const path = "./src/assets/" + texturePath;
+    const path = "/assets/" + texturePath;
     image.src = path;
 
     // Actually the onload is not necessary since local, haha :<

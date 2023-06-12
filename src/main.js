@@ -1,11 +1,10 @@
-import Collectibles from "./entities/Collectibles.js";
-import Ship from "./entities/Ship.js";
-import Sphere from "./entities/Sphere.js";
-import { hasCollided } from "./events/objectCollision.js";
-import { getRandomNumber } from "./utils/randomizer.js";
-import { playerInputs } from "./playerInputs.js";
-import Renderer from "./Renderer.js";
-import { selectItemFromArray } from "./utils/selectItemFromArray.js";
+import Collectibles from "/src/entities/Collectibles";
+import Ship from "/src/entities/Ship";
+import Sphere from "/src/entities/Sphere";
+import { hasCollided } from "/src/events/objectCollision";
+import { getRandomNumber } from "/src/utils/randomizer";
+import { getBackground } from "/src/utils/randomizeBackground";
+import { selectItemFromArray } from "/src/utils/selectItemFromArray";
 
 import {
   SMALLEST_PLANET_RADIUS,
@@ -20,8 +19,9 @@ import {
   SPHERE_SPHERE_COLLISION,
   ENTITY_SHIP_COLLISION,
   BULLET_COLORS,
-} from "./config.js";
-import { getBackground } from "./utils/randomizeBackground.js";
+} from "/src/config";
+import { playerInputs } from "/src/playerInputs";
+import Renderer from "/src/Renderer";
 
 // GLOBAL SCENE ATTRIBUTES
 const ship = new Ship(0, [0, -20, -SHIP_Z_DISTANCE_FROM_CAMERA]);
