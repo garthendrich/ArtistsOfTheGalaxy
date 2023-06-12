@@ -367,7 +367,7 @@ export default class Renderer {
 
     // Load the texture image
     const image = new Image();
-    const path = "./src/assets/" + texturePath;
+    const path = "/assets/" + texturePath;
     image.src = path;
 
     // Actually the onload is not necessary since local, haha :<
