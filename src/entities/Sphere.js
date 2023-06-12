@@ -1,3 +1,5 @@
+import * as glMatrix from "gl-matrix";
+
 import MovableEntity from "./MovableEntity.js";
 import { getRandomNumber } from "../utils/randomizer.js";
 

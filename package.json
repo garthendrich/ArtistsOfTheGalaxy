@@ -1,13 +1,24 @@
 {
+  "name": "artists-of-the-galaxy",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "prepare": "husky install",
+    "preview": "vite preview"
+  },
   "devDependencies": {
-    "eslint": "^8.37.0",
+    "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
-    "prettier": "2.8.7"
+    "lint-staged": "^13.2.2",
+    "prettier": "2.8.8",
+    "vite": "^4.3.9"
   },
-  "scripts": {
-    "prepare": "husky install"
+  "dependencies": {
+    "gl-matrix": "^3.4.3"
   },
   "lint-staged": {
     "*.js": "eslint --fix",

@@ -28,15 +28,12 @@ Spacebar - Shoot bullets
 
 Additional: Six background images are randomly rendered upon the loading of the page.
 
-# Dependencies
-
-1. glMatrix.js (provided in the CMSC 161 Laboratory Class)
-
 # Setting up for Development
 
-1. Run `npm install`
-2. Download the Live Server extension in VS Code.
-3. Run the Live Server.
+```sh
+npm install
+npm run dev
+```
 
 # Contributors
 
@@ -47,7 +44,7 @@ Additional: Six background images are randomly rendered upon the loading of the 
 
 # Copyright Use
 
-Background images and Planet textures are not created/owned by the developers. They are only used here for academic purposes and the  demonstration of this project.
+Background images and Planet textures are not created/owned by the developers. They are only used here for academic purposes and the demonstration of this project.
 
 Below are links of the images used:
 

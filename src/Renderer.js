@@ -1,3 +1,5 @@
+import * as glMatrix from "gl-matrix";
+
 import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
 import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
 import addArrays from "./utils/addArrays.js";
