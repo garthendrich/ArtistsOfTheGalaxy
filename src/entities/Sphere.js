@@ -1,7 +1,7 @@
 import * as glMatrix from "gl-matrix";
 
-import MovableEntity from "./MovableEntity.js";
-import { getRandomNumber } from "../utils/randomizer.js";
+import MovableEntity from "/src/entities/MovableEntity";
+import { getRandomNumber } from "/src/utils/randomizer";
 
 export default class Sphere extends MovableEntity {
   constructor(radius = 1, origin, isPlanet = false) {

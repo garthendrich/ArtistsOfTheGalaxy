@@ -1,11 +1,12 @@
-import Collectibles from "./entities/Collectibles.js";
-import Ship from "./entities/Ship.js";
-import Sphere from "./entities/Sphere.js";
-import { hasCollided } from "./events/objectCollision.js";
-import { getRandomNumber } from "./utils/randomizer.js";
-import { playerInputs } from "./playerInputs.js";
-import Renderer from "./Renderer.js";
-import { selectItemFromArray } from "./utils/selectItemFromArray.js";
+import Collectibles from "/src/entities/Collectibles";
+import Ship from "/src/entities/Ship";
+import Sphere from "/src/entities/Sphere";
+import { hasCollided } from "/src/events/objectCollision";
+import { getRandomNumber } from "/src/utils/randomizer";
+import { selectItemFromArray } from "/src/utils/selectItemFromArray";
+
+import { playerInputs } from "/src/playerInputs";
+import Renderer from "/src/Renderer";
 
 import {
   SMALLEST_PLANET_RADIUS,

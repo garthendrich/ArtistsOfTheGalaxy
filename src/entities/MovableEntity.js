@@ -1,5 +1,5 @@
-import addArrays from "../utils/addArrays.js";
-import Entity from "./Entity.js";
+import Entity from "/src/entities/Entity";
+import addArrays from "/src/utils/addArrays";
 
 export default class MovableEntity extends Entity {
   constructor(origin) {

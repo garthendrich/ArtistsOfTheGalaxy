@@ -1,10 +1,10 @@
 import * as glMatrix from "gl-matrix";
 
-import vertexShaderSourceCode from "./shaders/vertexShader.glsl.js";
-import fragmentShaderSourceCode from "./shaders/fragmentShader.glsl.js";
-import addArrays from "./utils/addArrays.js";
+import vertexShaderSourceCode from "/src/shaders/vertexShader.glsl";
+import fragmentShaderSourceCode from "/src/shaders/fragmentShader.glsl";
+import addArrays from "/src/utils/addArrays";
 
-import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "./config.js";
+import { FAR_BOUND, FIELD_OF_VIEW_DEGREES } from "/src/config";
 
 export default class Renderer {
   constructor(canvas, textures = null) {

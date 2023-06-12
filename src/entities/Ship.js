@@ -1,4 +1,4 @@
-import MovableEntity from "./MovableEntity.js";
+import MovableEntity from "/src/entities/MovableEntity";
 
 export default class Ship extends MovableEntity {
   constructor(length, origin) {
